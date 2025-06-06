@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+body{
+    background: #f1f1f1;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Righteous", sans-serif;
+ }
+
+.icon{
+    fill: rgb(145, 143, 135);
+    transition: fill 0.2s ease;
+}
+.icon:hover{
+    cursor: pointer;
+    fill: rgb(92, 90, 84);
+}
+
+.botao_cad{
+    cursor: pointer;
+    padding: 0.75rem 1.25rem;
+    margin-right: 2.5rem;    
+    border-radius: 0.75rem;  
+    font-size: 1rem;         
+    color: white;            
+    background-color: #18365E;
+    font-weight: bold;
+}
+  
+  .botao_cad:hover {
+    transform: scale(1.02);
+    transition: 75ms ease-in-out;
+  }
+  
+  .botao_cad:active {
+    transform: 75ms scale(0.98);
+  }
+  
+  .destaque{
+    color: rgb(253, 193, 40);
+    
+  }
