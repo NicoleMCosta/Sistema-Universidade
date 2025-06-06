@@ -25,49 +25,36 @@ export function Cadastrar_professor({open, setOpen}) {
                 <div className='mb-10'>
                     <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-600 rounded-xl bg-transparent" placeholder='ID' disabled/>
                 </div>
-                <div className='flex w-full justify-between gap-4'>
-                  {/* DIV ESQ */}
-                  <div className='w-1/2 flex flex-col gap-4'>
-                    <div>
+                <div className='flex-col w-full justify-between gap-4'>                 
+                    <div className='input'>
                       <label className='font-medium text-gray-900'>Nome</label>
                       <input
-                        className="p-1.5 w-full h-[40px] border-2 border-gray-100 text-base text-gray-600 rounded-xl bg-transparent placeholder:pl-2"
+                        className="input_plc"
                         placeholder='Nome'
                       />
                     </div>
-                    <div>
+                    <div className='input'>
                       <label className='font-medium text-gray-900'>Idade</label>
-                      <input
-                        className="p-1.5 w-full h-[40px] border-2 border-gray-100 text-base text-gray-600 rounded-xl bg-transparent placeholder:pl-2"
-                        placeholder='Idade'
-                      />
+                      <input className="input_plc" placeholder='Idade'/>
                     </div>
-                  </div>
-
-                  {/* DIV DIR */}
-                  <div className='w-1/2 flex flex-col gap-4'>
-                    <div>
+                    <div className='input'>
                       <label className='font-medium text-gray-900'>Especialidade</label>
-                      <input
-                        className="w-full h-[40px] border-2 border-gray-100 text-gray-600 rounded-xl p-1.5 bg-transparent placeholder:pl-2"
-                        placeholder='Especialidade'
-                      />
+                      <input className="input_plc" placeholder='Especialidade'/>
                     </div>
-                    <div>
+                    <div className='input'>
                       <label className='font-medium text-gray-900'>Sala</label>
                       <input
                         className="w-full h-[40px] border-2 border-gray-100 text-gray-600 rounded-xl p-1.5 bg-transparent placeholder:pl-2"
                         placeholder='Sala'
                       />
                     </div>
-                    <div>
+                    <div className='input'>
                       <label className='font-medium text-gray-900'>Tempo</label>
                       <input
                         className="w-full h-[40px] border-2 border-gray-100 text-gray-600 rounded-xl p-1.5 bg-transparent placeholder:pl-2"
                         placeholder='Tempo'
                       />
                     </div>
-                  </div>
                 </div>
 
           </CardBody>

@@ -2,9 +2,11 @@ import React, {useState,useEffect} from 'react';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { FaUserEdit } from "react-icons/fa";
 import { Cadastrar_professor } from './UpdateForms';
+import { Update_professor } from './UpdateForms';
 
 export function ProfessoresTables({selectedOption}){
     // const [professores, setProfessores] = useState([]);
+    const [openUpdate, setOpenUpdate] = useState(false);
 
     // useEffect(() => {
     //     fetch("/api/professores")
@@ -42,8 +44,9 @@ export function ProfessoresTables({selectedOption}){
                 <td className="px-4 py-2">{prof.tempo}</td>
                 <td className="px-4 py-2">
                     <div className="flex flex-row gap-5">
-                    <RiDeleteBin6Fill onClick={()=> <Cadastrar_professor/>} size={25} className="icon" />
-                    <FaUserEdit size={25} className="icon" />
+                    <RiDeleteBin6Fill onClick={()=>{console.log("O botão funciona")}} size={25} className="icon" />
+                    <FaUserEdit onClick={() => setOpenUpdate(true)} size={25} className="icon" />
+                    <Update_professor open={openUpdate} setOpen={setOpenUpdate} />
                     </div>
                 </td>
                 </tr>
@@ -198,10 +201,17 @@ export function ProjetosTables({selectedOption}){
         </div>
 )}
 
+
+//TABELA PARA TESTE
+
 const professores = [
     {
-        numMatriculaProf:
-
+        numMatriculaProf: 1,
+        nome: "mariana",
+        idade: 54,
+        especialidade_pesquisa: "bacterias",
+        sala: 12,
+        tempo: 22
     }
 
 ]
