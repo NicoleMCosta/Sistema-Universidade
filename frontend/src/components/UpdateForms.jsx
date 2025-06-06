@@ -112,6 +112,7 @@ export function Update_aluno({open, setOpen}) {
                 {/* O BOTAO DEVE ADICIONAR UM NOVO ALUNO */}
                 Salvar Alterações
               </Button>
+
             </CardFooter>
           
           </Card>

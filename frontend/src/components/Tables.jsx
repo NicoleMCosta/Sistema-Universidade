@@ -60,6 +60,7 @@ export function ProfessoresTables({selectedOption}){
 export function AlunosTables({selectedOption}){
     const [alunos, setAlunos] = useState([]);
     const [openUpdate, setOpenUpdate] = useState(false);
+    const [alunoSelecionado, setAlunoSelecionado] = useState(null);
 
     useEffect(() => {
         fetch("/api/alunos")
@@ -97,7 +98,7 @@ export function AlunosTables({selectedOption}){
                         <td className="px-4 py-2">
                             <div className="flex flex-row gap-5">
                             <RiDeleteBin6Fill onClick={''} size={25} className="icon" />
-                            <FaUserEdit onClick={() => setOpenUpdate(true)} size={25} className="icon" />
+                            <FaUserEdit onClick={() =>{setAlunoSelecionado(aluno); setOpenUpdate(true)}} size={25} className="icon" />
                             <Update_aluno open={openUpdate} setOpen={setOpenUpdate} />
                             </div>
                         </td>
@@ -277,3 +278,22 @@ const professores = [
     },
 
 ]
+
+// const alunos = [
+//     {
+//         id: 2,
+//         nome: "ana carousel",
+//         idade: 23,
+//         tipo_curso: "engenharia",
+//         numDept: 1,
+//         numMatricula_aconselhador: 3
+//     },
+//     {
+//         id: 2,
+//         nome: "ana carousel",
+//         idade: 23,
+//         tipo_curso: "engenharia",
+//         numDept: 1,
+//         numMatricula_aconselhador: 3
+//     }
+// ]

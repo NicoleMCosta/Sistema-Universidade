@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Dialog,
@@ -66,6 +66,22 @@ export function Cadastrar_professor({open, setOpen}) {
 
 export function Cadastrar_aluno({open, setOpen}) {
   const handleOpen = () => setOpen(!open); 
+
+  const [info, setInfo] = useState({
+    id: '',
+    nome: '',
+    idade: '',
+    tipo_curso:'',
+    numDept: '',
+    numMatricula_aconselhador: '',
+  });
+
+  // function handleChange(e) {
+  //   setInfo((prev)=> ({ ...prev, [e.target.name]: e.target.value }));
+  // }
+  console.log(info);
+  // const handleSubmit= ()=> '';
+
   return (
     <>
       <Dialog size="lg" open={open} handler={handleOpen} className="flex items-center justify-center bg-transparent shadow-none">
