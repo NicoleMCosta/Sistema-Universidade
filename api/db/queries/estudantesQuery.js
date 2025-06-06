@@ -24,5 +24,3 @@ RETURNING *;
 export const deletarEstudanteQuery = `DELETE FROM estudantes WHERE numMatriculaEstd = $1 RETURNING *`;
 
     
-
-//fazer outras queries

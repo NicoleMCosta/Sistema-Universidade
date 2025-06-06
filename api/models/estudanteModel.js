@@ -5,7 +5,7 @@ import {
     buscarEstudanteQuery,
     atualizarEstudanteQuery,
     deletarEstudanteQuery,
-} from "../db/sqlQuery.js"
+} from "../db/queries/estudantesQuery.js"
 
 export async function buscarTodosEstudantes() {
   const res = await query(buscarTodosEstudantesQuery);

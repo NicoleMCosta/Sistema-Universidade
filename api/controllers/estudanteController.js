@@ -1,20 +1,10 @@
 import {
-  buscarTodosEstudantes,
   criarEstudante,
   buscarEstudantePorMat,
   atualizarEstudante,
   deletarEstudante
-} from '../models/alunoModel.js';
+} from '../models/estudanteModel.js';
 import { criarErro } from "../middlewares/erros.js";
-
-export async function buscar(req, res, next) {
-  try {
-    const estudantes = await buscarTodosEstudantes();
-    res.status(200).json(estudantes);
-  } catch (erro) {
-    return next(criarErro(500, "Erro ao listar alunos"));
-  }
-}
 
 export async function criar(req, res, next) {
     try {

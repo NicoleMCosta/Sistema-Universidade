@@ -1,32 +1,51 @@
-import express from "express"
-import cors from "cors"
-import dotenv from "dotenv"
-import alunoRoutes from "./routes/alunoRoutes.js"
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
-dotenv.config()
+import estudantesRoutes from "./routes/estudantesRoutes.js";
+import professoresRoutes from "./routes/professoresRoutes.js";
+import departamentosRoutes from "./routes/departamentosRoutes.js";
+import projetosRoutes from "./routes/projetosRoutes.js";
+import pesquisaRoutes from "./routes/pesquisaRoutes.js";
+import participaRoutes from "./routes/participaRoutes.js";
+import trabalhaRoutes from "./routes/trabalhaRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
-const app = express()
+dotenv.config();
+
+const app = express();
 const PORT = 3000;
 
 const corsOptions = {
-    origin: "*"
-}
+  origin: "*"
+};
 
 app.use(cors(corsOptions));
-app.use(express.json())
+app.use(express.json());
 
-app.use('/api/alunos', alunoRoutes);
+
+app.use('/api/estudantes', estudantesRoutes);
+app.use('/api/professores', professoresRoutes);
+app.use('/api/departamentos', departamentosRoutes);
+app.use('/api/projetos', projetosRoutes);
+app.use('/api/pesquisa', pesquisaRoutes);
+app.use('/api/participa', participaRoutes);
+app.use('/api/trabalha', trabalhaRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+
 
 app.use(function (req, res) {
-    res.status(404).json({error: 'Not found'})
-})
-
-app.use((err, req, res, next) => {
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal server error';
-    return res.status(statusCode).json({ error:message });
+  res.status(404).json({ error: 'Not found' });
 });
 
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal server error';
+  return res.status(statusCode).json({ error: message });
+});
+
+
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-})
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
