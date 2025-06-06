@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import {ProfessoresTables, AlunosTables, DepartamentosTables, ProjetosTables} from './Tables.jsx';
-import { Cadastrar_professor } from './CadastroForms.jsx';
+import { Cadastrar_aluno, Cadastrar_professor, Cadastrar_projeto, Cadastrar_departamento} from './CadastroForms.jsx';
 
 export default function Dashboard() {
-  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('');
   const [dialogAberto, setDialogAberto] = useState(null);
   
@@ -94,12 +92,15 @@ export default function Dashboard() {
           <div className="bg-transparent p-10 rounded-xl mt-10">
               {/* BOTAO DE CADASTRAR */}
               <div className='flex justify-end items-center'>
-                  <button onClick={() => navigate("/cadastrar_aluno")} className='botao_cad'>
+                  <button onClick={() => setDialogAberto("aluno")} className='botao_cad'>
                     Adicionar
                   </button>
               </div>   
             <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Alunos</h2>
             <AlunosTables selectedOption={selectedOption} />
+            {dialogAberto === "aluno" && (
+              <Cadastrar_aluno open={true} setOpen={() => setDialogAberto(null)} />
+            )}
           </div>
         )}
 
@@ -108,12 +109,15 @@ export default function Dashboard() {
           <div className="bg-transparent p-10 rounded-xl mt-10">
               {/* BOTAO DE CADASTRAR */}
               <div className='flex justify-end items-center'>
-                  <button onClick={() => navigate("/cadastrar_departamento")} className='botao_cad'>
+                  <button onClick={() => setDialogAberto("departamento")} className='botao_cad'>
                     Adicionar
                   </button>
               </div>   
-            <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Departamentos</h2>
-            <DepartamentosTables selectedOption={selectedOption} />
+            <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Departamento</h2>
+            <AlunosTables selectedOption={selectedOption} />
+            {dialogAberto === "departamento" && (
+              <Cadastrar_departamento open={true} setOpen={() => setDialogAberto(null)} />
+            )}
           </div>
         )}
 
@@ -122,12 +126,15 @@ export default function Dashboard() {
           <div className="bg-transparent p-10 rounded-xl mt-10">
               {/* BOTAO DE CADASTRAR */}
               <div className='flex justify-end items-center'>
-                  <button onClick={() => navigate("/cadastrar_projeto")} className='botao_cad'>
+                  <button onClick={() => setDialogAberto("projeto")} className='botao_cad'>
                     Adicionar
                   </button>
               </div>   
-            <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Projetos</h2>
-            <ProjetosTables selectedOption={selectedOption} />
+            <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Projeto</h2>
+            <AlunosTables selectedOption={selectedOption} />
+            {dialogAberto === "projeto" && (
+              <Cadastrar_projeto open={true} setOpen={() => setDialogAberto(null)} />
+            )}
           </div>
         )}
       </div>
