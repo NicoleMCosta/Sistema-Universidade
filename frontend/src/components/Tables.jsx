@@ -1,16 +1,17 @@
 import React, {useState,useEffect} from 'react';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { FaUserEdit } from "react-icons/fa";
+import { Cadastrar_professor } from './UpdateForms';
 
 export function ProfessoresTables({selectedOption}){
-    const [professores, setProfessores] = useState([]);
+    // const [professores, setProfessores] = useState([]);
 
-    useEffect(() => {
-        fetch("/api/professores")
-          .then((res) => res.json())
-          .then((data) => setProfessores(data))
-          .catch((err) => console.error("Erro ao buscar professores:", err));
-      }, []);
+    // useEffect(() => {
+    //     fetch("/api/professores")
+    //       .then((res) => res.json())
+    //       .then((data) => setProfessores(data))
+    //       .catch((err) => console.error("Erro ao buscar professores:", err));
+    //   }, []);
 
     return (
     <div className="w-full">
@@ -41,7 +42,7 @@ export function ProfessoresTables({selectedOption}){
                 <td className="px-4 py-2">{prof.tempo}</td>
                 <td className="px-4 py-2">
                     <div className="flex flex-row gap-5">
-                    <RiDeleteBin6Fill onClick={''} size={25} className="icon" />
+                    <RiDeleteBin6Fill onClick={()=> <Cadastrar_professor/>} size={25} className="icon" />
                     <FaUserEdit size={25} className="icon" />
                     </div>
                 </td>
@@ -196,3 +197,11 @@ export function ProjetosTables({selectedOption}){
             </div>
         </div>
 )}
+
+const professores = [
+    {
+        numMatriculaProf:
+
+    }
+
+]
