@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {ProfessoresTables, AlunosTables, DepartamentosTables, ProjetosTables} from './Tables.jsx';
 import { Cadastrar_aluno, Cadastrar_professor, Cadastrar_projeto, Cadastrar_departamento} from './CadastroForms.jsx';
 
+
+
 export default function Dashboard() {
   const [selectedOption, setSelectedOption] = useState('');
   const [dialogAberto, setDialogAberto] = useState(null);
-  
+
   return (
     <div className="w-screen h-screen bg-gray-200 py-20 flex">
       <div className="flex-1 pt-10 pr-20 pl-20">
@@ -114,7 +116,7 @@ export default function Dashboard() {
                   </button>
               </div>   
             <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Departamento</h2>
-            <AlunosTables selectedOption={selectedOption} />
+            <DepartamentosTables selectedOption={selectedOption} />
             {dialogAberto === "departamento" && (
               <Cadastrar_departamento open={true} setOpen={() => setDialogAberto(null)} />
             )}
@@ -131,7 +133,7 @@ export default function Dashboard() {
                   </button>
               </div>   
             <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Projeto</h2>
-            <AlunosTables selectedOption={selectedOption} />
+            <ProjetosTables selectedOption={selectedOption} />
             {dialogAberto === "projeto" && (
               <Cadastrar_projeto open={true} setOpen={() => setDialogAberto(null)} />
             )}

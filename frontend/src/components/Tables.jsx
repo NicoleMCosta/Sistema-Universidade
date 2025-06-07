@@ -5,15 +5,15 @@ import { Cadastrar_professor } from './CadastroForms';
 import {Update_aluno, Update_departamento, Update_professor, Update_projeto} from './UpdateForms';
 
 export function ProfessoresTables({selectedOption}){
-    // const [professores, setProfessores] = useState([]);
+    const [professores, setProfessores] = useState([]);
     const [openUpdate, setOpenUpdate] = useState(false);
 
-    // useEffect(() => {
-    //     fetch("/api/professores")
-    //       .then((res) => res.json())
-    //       .then((data) => setProfessores(data))
-    //       .catch((err) => console.error("Erro ao buscar professores:", err));
-    //   }, []);
+    useEffect(() => {
+        fetch("/api/professores")
+          .then((res) => res.json())
+          .then((data) => setProfessores(data))
+          .catch((err) => console.error("Erro ao buscar professores:", err));
+      }, []);
 
     return (
     <div className="w-full">
@@ -211,73 +211,73 @@ export function ProjetosTables({selectedOption}){
 
 //TABELA PARA TESTE
 
-const professores = [
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
-    {
-        numMatriculaProf: 1,
-        nome: "mariana",
-        idade: 54,
-        especialidade_pesquisa: "bacterias",
-        sala: 12,
-        tempo: 22
-    },
+// const professores = [
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
+//     {
+//         numMatriculaProf: 1,
+//         nome: "mariana",
+//         idade: 54,
+//         especialidade_pesquisa: "bacterias",
+//         sala: 12,
+//         tempo: 22
+//     },
 
-]
+// ]
 
 // const alunos = [
 //     {
