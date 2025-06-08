@@ -94,12 +94,12 @@ export function Cadastrar_aluno({open, setOpen}) {
   const queryClient = useQueryClient();
 
   const [info, setInfo] = useState({
-    nummatriculaestd: '',
+    numMatriculaEstd: '',
     nome: '',
     idade: '',
     tipo_curso: '',
     numDept: '',
-    nummatricula_aconselhador: '',
+    numMatricula_aconselhador: '',
   });
 
   const handleFormChange = (e) => {
@@ -119,6 +119,7 @@ export function Cadastrar_aluno({open, setOpen}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Dados enviados (aluno):", info);
     mutation.mutate(info);
   }
 
@@ -133,7 +134,7 @@ export function Cadastrar_aluno({open, setOpen}) {
             </div>
             <div className='mb-10'>
               <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-600 rounded-xl bg-transparent" placeholder='ID'
-                onChange={handleFormChange} name="nummatriculaestd" value={info.nummatriculaestd}/>
+                onChange={handleFormChange} name="numMatriculaEstd" value={info.numMatriculaEstd}/>
             </div>
             <div className='flex-col w-full justify-between gap-4'>
               <div className='input'>
@@ -154,7 +155,7 @@ export function Cadastrar_aluno({open, setOpen}) {
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Aconselhador</label>
-                <input className="input_plc" name='m' onChange={handleFormChange} value={info.m} placeholder='Id do aluno conselheiro'/>
+                <input className="input_plc" name='numMatricula_aconselhador' onChange={handleFormChange} value={info.numMatricula_aconselhador} placeholder='Id do aluno conselheiro'/>
               </div>
             </div>
           </CardBody>

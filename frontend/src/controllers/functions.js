@@ -19,22 +19,29 @@ import { toast } from "react-toastify";
     return res.json();
   };
 
-  export const criarAluno = async (info) => {
-    const res = await fetch('http://localhost:3000/api/estudantes', {
+  export async function criarAluno(data) {
+  try {
+    console.log("Enviando aluno para API:", data);
+    const response = await fetch('http://localhost:3000/api/estudantes', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(info),
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
     });
-  
-    if (!res.ok) {
-      throw new Error("Erro ao cadastrar aluno");
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Erro do servidor (aluno):", response.status, errorText);
+      throw new Error(errorText || 'Erro ao criar aluno');
     }
-  
-    return res.json()
-    .then(console.log(res.json));
-  };
+
+    return response.json();
+  } catch (err) {
+    console.error("Erro no catch criarAluno:", err);
+    throw err;
+  }
+}
+
+
 
   export const criarDepartamento = async (info) => {
     const res = await fetch('http://localhost:3000/api/departamentos', {
