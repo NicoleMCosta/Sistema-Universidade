@@ -3,29 +3,26 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { FaUserEdit } from "react-icons/fa";
 import { Cadastrar_professor } from './CadastroForms';
 import {Update_aluno, Update_departamento, Update_professor, Update_projeto} from './UpdateForms';
-import { DadosDashboard} from '../../utils/hooks';
+import { DadosDashboard, useDeletar} from '../../utils/hooks';
 
 
 export function ProfessoresTables({ searchTerm}) {
   const { data, isPending } = DadosDashboard();
+  const { mutate: deletarProfessor, isPending: isDeletando } = useDeletar('professores');
   const [professorSelecionado, setProfessorSelecionado] = useState(null);
 
-  if (isPending) return <p>Loading</p>;
+  if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
   const professoresFiltrados = data.professores.filter(prof =>
     prof.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // const { mutate: deletarProf, isPending:isDeleteProf } = DadosDelete("professores");
-  
-  // function handleDelete(id) {
-  //   if (window.confirm('Deseja excluir esse item?')) {
-  //     deletarProf(id);
-  //   }
-  // } 
-  // if (isDeleteProf) return <p>Loading</p>;
-  // if (!data) return <p>Erro ao carregar dados.</p>;
+  function handleDelete(id) {
+    if (window.confirm('Deseja excluir esse professor?')) {
+      deletarProfessor(id);
+    }
+  }
 
   return (
     <div className="w-full">
@@ -53,7 +50,7 @@ export function ProfessoresTables({ searchTerm}) {
                 <td className="px-4 py-2">{prof.tempo}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
-                    <RiDeleteBin6Fill  size={25} className="icon"/>
+                    <RiDeleteBin6Fill onClick={() => handleDelete(prof.nummatriculaprof)} size={25} className="icon" />
                     <FaUserEdit size={25} className="icon" onClick={() => setProfessorSelecionado(prof)}/>
                   </div>
                 </td>
@@ -71,22 +68,22 @@ export function ProfessoresTables({ searchTerm}) {
 
 export function AlunosTables({ searchTerm }) {
   const { data, isPending } = DadosDashboard();
-  if (isPending) return <p>Loading</p>;
+  const { mutate: deletarAluno, isPending: isDeletando } = useDeletar('estudantes');
+  const [alunoSelecionado, setAlunoSelecionado] = useState(null);
+
+  if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
+
+  function handleDelete(id) {
+    if (window.confirm('Deseja excluir esse aluno?')) {
+      deletarAluno(id);
+    }
+  }
+
 
   const estudantesFiltrados = data.estudantes.filter(estudante =>
     estudante.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // const { mutate: deletarAluno, isPending: isDeleteAluno } = DadosDelete("estudantes");
-
-  // function handleDelete(id) {
-  //   if (window.confirm('Deseja excluir esse item?')) {
-  //     deletarAluno(id);
-  //   }
-  // }
-  // if (isDeleteAluno) return <p>Loading</p>;
-
   return (
     <div className="w-full">
       <div className="max-h-64 overflow-y-auto">
@@ -114,13 +111,16 @@ export function AlunosTables({ searchTerm }) {
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(aluno.nummatriculaestd)} size={25} className="icon" />
-                    <FaUserEdit size={25} className="icon" />
+                    <FaUserEdit size={25} className="icon" onClick={() => setAlunoSelecionado(aluno)}/>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {alunoSelecionado && (
+                <Update_aluno open={!!alunoSelecionado} setOpen={() => setAlunoSelecionado(null)} aluno={alunoSelecionado}/>
+            )}
       </div>
     </div>
   );
@@ -128,22 +128,20 @@ export function AlunosTables({ searchTerm }) {
 
 export function DepartamentosTables({ searchTerm }) {
   const { data, isPending } = DadosDashboard();
-  // const { mutate: deletarDept, isPending: isDeleteDept } = DadosDelete("departamentos");
+  const { mutate: deletarDepartamento, isPending: isDeletando } = useDeletar('departamentos');
+  const [departamentoSelecionado, setDepartamentoSelecionado] = useState(null);
 
-  if (isPending) return <p>Loading</p>;
+  if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
+  function handleDelete(id) {
+    if (window.confirm('Deseja excluir esse departamento?')) {
+      deletarDepartamento(id);
+    }
+  }
   const departamentosFiltrados = data.departamentos.filter(departamento =>
-    departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // function handleDelete(id) {
-  //   if (window.confirm('Deseja excluir esse item?')) {
-  //     deletarDept(id);
-  //   }
-  // }
-
-  // if (isDeleteDept) return <p>Loading</p>;
+      departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <div className="w-full">
@@ -168,13 +166,16 @@ export function DepartamentosTables({ searchTerm }) {
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(dept.numdept)} size={25} className="icon" />
-                    <FaUserEdit size={25} className="icon" />
+                    <FaUserEdit size={25} className="icon" onClick={() => setDepartamentoSelecionado(dept)}/>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {departamentoSelecionado && (
+                <Update_departamento open={!!departamentoSelecionado} setOpen={() => setDepartamentoSelecionado(null)} departamento={departamentoSelecionado}/>
+            )}
       </div>
     </div>
   );
@@ -182,23 +183,20 @@ export function DepartamentosTables({ searchTerm }) {
 
 export function ProjetosTables({ searchTerm }) {
   const { data, isPending } = DadosDashboard();
-  // const { mutate: deletarProj, isPending: isDeleteProj } = DadosDelete("projetos");
+  const { mutate: deletarProjetos, isPending: isDeletando } = useDeletar('projetos');
+  const [projetoSelecionado, setProjetoSelecionado] = useState(null);
 
-  if (isPending) return <p>Loading</p>;
+  if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
+  function handleDelete(id) {
+    if (window.confirm('Deseja excluir esse projeto?')) {
+      deletarProjetos(id);
+    }
+  }
   const projetosFiltrados = data.projetos.filter(proj =>
-    proj.numprojeto?.toString().includes(searchTerm)
-  );
-
-  // function handleDelete(id) {
-  //   if (window.confirm('Deseja excluir esse item?')) {
-  //     deletarProj(id);
-  //   }
-  // }
-
-  // if (isDeleteProj) return <p>Loading</p>;
-
+      proj.numprojeto?.toString().includes(searchTerm)
+    );
   return (
     <div className="w-full">
       <div className="max-h-64 overflow-y-auto">
@@ -226,13 +224,16 @@ export function ProjetosTables({ searchTerm }) {
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(proj.numprojeto)} size={25} className="icon" />
-                    <FaUserEdit size={25} className="icon" />
+                    <FaUserEdit size={25} className="icon" onClick={() => setProjetoSelecionado(proj)}/>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {projetoSelecionado && (
+                <Update_projeto open={!!projetoSelecionado} setOpen={() => setProjetoSelecionado(null)} projeto={projetoSelecionado}/>
+            )}
       </div>
     </div>
   );
