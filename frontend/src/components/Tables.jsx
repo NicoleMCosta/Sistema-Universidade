@@ -3,7 +3,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { FaUserEdit } from "react-icons/fa";
 import { Cadastrar_professor } from './CadastroForms';
 import {Update_aluno, Update_departamento, Update_professor, Update_projeto} from './UpdateForms';
-import { DadosDashboard, DadosDelete} from '../../utils/hooks';
+import { DadosDashboard} from '../../utils/hooks';
 
 
 export function ProfessoresTables({ searchTerm}) {
@@ -71,8 +71,6 @@ export function ProfessoresTables({ searchTerm}) {
 
 export function AlunosTables({ searchTerm }) {
   const { data, isPending } = DadosDashboard();
-  const { mutate: deletarAluno, isPending: isDeleteAluno } = DadosDelete("estudantes");
-
   if (isPending) return <p>Loading</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
@@ -80,13 +78,14 @@ export function AlunosTables({ searchTerm }) {
     estudante.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function handleDelete(id) {
-    if (window.confirm('Deseja excluir esse item?')) {
-      deletarAluno(id);
-    }
-  }
+  // const { mutate: deletarAluno, isPending: isDeleteAluno } = DadosDelete("estudantes");
 
-  if (isDeleteAluno) return <p>Loading</p>;
+  // function handleDelete(id) {
+  //   if (window.confirm('Deseja excluir esse item?')) {
+  //     deletarAluno(id);
+  //   }
+  // }
+  // if (isDeleteAluno) return <p>Loading</p>;
 
   return (
     <div className="w-full">
@@ -129,7 +128,7 @@ export function AlunosTables({ searchTerm }) {
 
 export function DepartamentosTables({ searchTerm }) {
   const { data, isPending } = DadosDashboard();
-  const { mutate: deletarDept, isPending: isDeleteDept } = DadosDelete("departamentos");
+  // const { mutate: deletarDept, isPending: isDeleteDept } = DadosDelete("departamentos");
 
   if (isPending) return <p>Loading</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
@@ -138,13 +137,13 @@ export function DepartamentosTables({ searchTerm }) {
     departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function handleDelete(id) {
-    if (window.confirm('Deseja excluir esse item?')) {
-      deletarDept(id);
-    }
-  }
+  // function handleDelete(id) {
+  //   if (window.confirm('Deseja excluir esse item?')) {
+  //     deletarDept(id);
+  //   }
+  // }
 
-  if (isDeleteDept) return <p>Loading</p>;
+  // if (isDeleteDept) return <p>Loading</p>;
 
   return (
     <div className="w-full">
@@ -183,7 +182,7 @@ export function DepartamentosTables({ searchTerm }) {
 
 export function ProjetosTables({ searchTerm }) {
   const { data, isPending } = DadosDashboard();
-  const { mutate: deletarProj, isPending: isDeleteProj } = DadosDelete("projetos");
+  // const { mutate: deletarProj, isPending: isDeleteProj } = DadosDelete("projetos");
 
   if (isPending) return <p>Loading</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
@@ -192,13 +191,13 @@ export function ProjetosTables({ searchTerm }) {
     proj.numprojeto?.toString().includes(searchTerm)
   );
 
-  function handleDelete(id) {
-    if (window.confirm('Deseja excluir esse item?')) {
-      deletarProj(id);
-    }
-  }
+  // function handleDelete(id) {
+  //   if (window.confirm('Deseja excluir esse item?')) {
+  //     deletarProj(id);
+  //   }
+  // }
 
-  if (isDeleteProj) return <p>Loading</p>;
+  // if (isDeleteProj) return <p>Loading</p>;
 
   return (
     <div className="w-full">
