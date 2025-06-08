@@ -98,7 +98,7 @@ export function Cadastrar_aluno({open, setOpen}) {
     nome: '',
     idade: '',
     tipo_curso: '',
-    numdept: '',
+    numDept: '',
     nummatricula_aconselhador: '',
   });
 
@@ -150,7 +150,7 @@ export function Cadastrar_aluno({open, setOpen}) {
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Departamento</label>
-                <input className="input_plc" name='numdept' onChange={handleFormChange} value={info.numdept} placeholder='Id do departamento'/>
+                <input className="input_plc" name='numDept' onChange={handleFormChange} value={info.numDept} placeholder='Id do departamento'/>
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Aconselhador</label>
@@ -174,7 +174,7 @@ export function Cadastrar_departamento({open, setOpen}) {
   const queryClient = useQueryClient();
 
   const [info, setInfo] = useState({
-    numdept: '',
+    numDept: '',
     nome: '',
     escritorio_principal: '',
     // lider_dept:''
@@ -211,7 +211,7 @@ export function Cadastrar_departamento({open, setOpen}) {
             </div>
             <div className='mb-10'>
               <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-600 rounded-xl bg-transparent" placeholder='ID'
-                onChange={handleFormChange} name='numdept' value={info.numdept}/>
+                onChange={handleFormChange} name='numDept' value={info.numDept}/>
             </div>
             <div className='flex-col w-full justify-between gap-4'>
               <div className='input'>

@@ -138,7 +138,6 @@ export const updateProjeto = async (info) => {
   };
 
 //DELETE
-//não está funcionando
 export function useDeletar(entidade) {
   const queryClient = useQueryClient();
 
