@@ -13,7 +13,7 @@ export default function Dashboard() {
   return (
     <div className="w-screen h-screen bg-gray-200 py-20 flex">
       <div className="flex-1 pt-10 pr-20 pl-20">
-        {/* SEARCH BAR -- não funciona ainda*/}
+        {/* SEARCH BAR*/}
         <div className="flex px-4 py-3 rounded-md border-2 border-[#18365E] overflow-hidden max-w-md mx-auto mb-10">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px" className="fill-gray-600 mr-3 rotate-90">
             <path
@@ -102,6 +102,9 @@ export default function Dashboard() {
               </div>   
             <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Alunos</h2>
             <AlunosTables selectedOption={selectedOption} searchTerm={searchTerm}/>
+            {dialogAberto === "aluno" && (
+              <Cadastrar_aluno open={true} setOpen={() => setDialogAberto(null)} />
+            )}
           </div>
         )}
 
@@ -116,6 +119,9 @@ export default function Dashboard() {
               </div>   
             <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Departamentos</h2>
             <DepartamentosTables selectedOption={selectedOption} searchTerm={searchTerm}/>
+            {dialogAberto === "departamento" && (
+              <Cadastrar_departamento open={true} setOpen={() => setDialogAberto(null)} />
+            )}
           </div>
         )}
 
@@ -130,6 +136,9 @@ export default function Dashboard() {
               </div>   
             <h2 className="mt-10 text-3xl font-bold mb-5 text-[#18365E]">Projetos</h2>
             <ProjetosTables selectedOption={selectedOption} searchTerm={searchTerm}/>
+            {dialogAberto === "projeto" && (
+              <Cadastrar_projeto open={true} setOpen={() => setDialogAberto(null) } />
+            )}
           </div>
         )}
       </div>
