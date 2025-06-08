@@ -63,7 +63,7 @@ export function Update_professor({open, setOpen, professor}) {
                   </div>
                   <div className='mb-10'>
                       <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-400 rounded-xl bg-transparent" 
-                        value={info.nummatriculaprof} disabled />
+                        name='nummatriculaprof' value={info.nummatriculaprof} disabled />
                   </div>
                   <div className='flex w-full justify-between gap-4'>
                     <div className='w-1/2 flex flex-col gap-4'>
@@ -107,6 +107,7 @@ export function Update_professor({open, setOpen, professor}) {
 }
 
 export function Update_aluno({open, setOpen, aluno}) {
+  console.log(aluno);
   const handleOpen = () => setOpen(!open); 
   const queryClient = useQueryClient();
 
@@ -114,9 +115,9 @@ export function Update_aluno({open, setOpen, aluno}) {
     nummatriculaestd: '',
     nome: '',
     idade: '',
-    curso: '',
+    tipo_curso: '',
     numdept: '',
-    nummatriculaconselheiro: ''
+    nummatricula_aconselhador: ''
   });
 
   useEffect(() => {
@@ -157,12 +158,12 @@ export function Update_aluno({open, setOpen, aluno}) {
               </div>
               <div className='mb-10'>
                 <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-400 rounded-xl bg-transparent" 
-                  value={info.nummatriculaestd} disabled />
+                  name='nummatriculaestd' value={info.nummatriculaestd} disabled />
               </div>
               <div className='flex-col w-full justify-between gap-4'>                 
                 <div className='input'>
-                  <label className='font-medium text-gray-900'>Nome</label>
-                  <input className="input_plc" name="nome" value={info.nome} onChange={handleChange} />
+                  <label className='fDnt-medium text-gray-900'>Nome</label>
+                  <input className="iMput_plc" name="nome" value={info.nome} onChange={handleChange} />
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Idade</label>
@@ -170,7 +171,7 @@ export function Update_aluno({open, setOpen, aluno}) {
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Curso</label>
-                  <input className="input_plc" name="curso" value={info.curso} onChange={handleChange} />
+                  <input className="input_plc" name="tipo_curso" value={info.tipo_curso} onChange={handleChange} />
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Departamento</label>
@@ -178,7 +179,7 @@ export function Update_aluno({open, setOpen, aluno}) {
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Aconselhador</label>
-                  <input className="input_plc" name="nummatriculaconselheiro" value={info.nummatriculaconselheiro} onChange={handleChange} />
+                  <input className="input_plc" name="nummatricula_aconselhador" value={info.nummatricula_aconselhador} onChange={handleChange} />
                 </div>
               </div>
             </CardBody>
@@ -201,7 +202,8 @@ export function Update_departamento({open, setOpen, departamento}) {
   const [info, setInfo] = useState({
     numdept: '',
     nome: '',
-    escritorio: ''
+    escritorio_principal: '',
+    // lider_dept:''
   });
 
   useEffect(() => {
@@ -250,8 +252,12 @@ export function Update_departamento({open, setOpen, departamento}) {
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Escritório Principal</label>
-                <input className="input_plc" name="escritorio" value={info.escritorio} onChange={handleChange} />
+                <input className="input_plc" name="escritorio_principal" value={info.escritorio_principal} onChange={handleChange} />
               </div>
+              {/* <div className='input'>
+                <label className='font-medium text-gray-900'>Líder do Departamento</label>
+                <input className="input_plc" name='lider_dept' onChange={handleChange} value={info.lider_dept}/>
+              </div> */}
             </CardBody>
             <CardFooter className="pt-0">
               <Button variant="gradient" onClick={handleUpdate} fullWidth className='botao_cad mt-10'>
@@ -271,11 +277,11 @@ export function Update_projeto({open, setOpen, projeto}) {
 
   const [info, setInfo] = useState({
     numprojeto: '',
-    orgao_fomento: '',
-    datainicio: '',
-    datafim: '',
+    orgao_financiador: '',
+    data_inicio: '',
+    data_final: '',
     orcamento: '',
-    nummatriculaprof: ''
+    pesquisador_principal: ''
   });
 
   useEffect(() => {
@@ -321,15 +327,15 @@ export function Update_projeto({open, setOpen, projeto}) {
               <div className='flex-col w-full justify-between gap-4'>                 
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Órgão Financiador</label>
-                  <input className="input_plc" name="orgao_fomento" value={info.orgao_fomento} onChange={handleChange} />
+                  <input className="input_plc" name="orgao_financiador" value={info.orgao_financiador} onChange={handleChange} />
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Data de Início</label>
-                  <input className="input_plc" name="datainicio" value={info.datainicio} onChange={handleChange} />
+                  <input className="input_plc" name="data_inicio" value={info.data_inicio} onChange={handleChange} />
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Data de Finalização</label>
-                  <input className="input_plc" name="datafim" value={info.datafim} onChange={handleChange} />
+                  <input className="input_plc" name="data_final" value={info.data_final} onChange={handleChange} />
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Orçamento</label>
@@ -337,7 +343,7 @@ export function Update_projeto({open, setOpen, projeto}) {
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Pesquisador Principal</label>
-                  <input className="input_plc" name="nummatriculaprof" value={info.nummatriculaprof} onChange={handleChange} />
+                  <input className="input_plc" name="pesquisador_principal" value={info.pesquisador_principal} onChange={handleChange} />
                 </div>
               </div>
             </CardBody>

@@ -1,7 +1,9 @@
 import { baseUrl } from "../../constants/global_vars";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
 //CADASTRO
-export const criarProfessor = async (info) => {
+  export const criarProfessor = async (info) => {
     const res = await fetch('http://localhost:3000/api/professores', {
       method: 'POST',
       headers: {
@@ -30,7 +32,8 @@ export const criarProfessor = async (info) => {
       throw new Error("Erro ao cadastrar aluno");
     }
   
-    return res.json();
+    return res.json()
+    .then(console.log(res.json));
   };
 
   export const criarDepartamento = async (info) => {
@@ -65,8 +68,8 @@ export const criarProfessor = async (info) => {
     return res.json();
   };
 
-//UPDATE
 
+//UPDATE
 export const updateProfessor = async (info) => {
   const res = await fetch(`${baseUrl}/api/professores/${info.nummatriculaprof}`, {
     method: 'PUT',
@@ -119,7 +122,7 @@ export const updateDepartamento = async (info) => {
 
 
 export const updateProjeto = async (info) => {
-    const res = await fetch(`${baseUrl}/api/projetos/${info.numprojetos}`, {
+    const res = await fetch(`${baseUrl}/api/projetos/${info.numprojeto}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -136,21 +139,32 @@ export const updateProjeto = async (info) => {
 
 //DELETE
 //não está funcionando
-export function DadosDelete(tableName) {
-    const queryClient = useQueryClient();
-  
-    return useMutation({
-      mutationFn: async (id) => {
-        const res = await fetch(`${baseUrl}/${tableName}/${id}`, {
-          method: 'DELETE',
-        });
-        if (!res.ok) {
-            console.log("algo deu errado coom ", tableName);
-          throw new Error(`Erro ao deletar de ${tableName}`);
+export function useDeletar(entidade) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id) => {
+      console.log(`${id}`);
+      const response = await fetch(`${baseUrl}/api/${entidade}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json"
         }
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      },
-    });
-  }
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || `Erro ao deletar ${entidade}`);
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    },
+    onError: (error) => {
+      console.error('🚨 Erro na mutação:', error.message);
+      toast.error(error.message);
+    }
+  });
+}

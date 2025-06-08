@@ -1,9 +1,9 @@
 import React, { useState/*, useEffect*/} from 'react';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { FaUserEdit } from "react-icons/fa";
-import { Cadastrar_professor } from './CadastroForms';
 import {Update_aluno, Update_departamento, Update_professor, Update_projeto} from './UpdateForms';
-import { DadosDashboard, useDeletar} from '../../utils/hooks';
+import { DadosDashboard} from '../../utils/hooks';
+import { useDeletar } from '../controllers/functions';
 
 
 export function ProfessoresTables({ searchTerm}) {
@@ -18,9 +18,10 @@ export function ProfessoresTables({ searchTerm}) {
     prof.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function handleDelete(id) {
+  function handleDelete(nummatriculaprof) {
     if (window.confirm('Deseja excluir esse professor?')) {
-      deletarProfessor(id);
+      deletarProfessor(nummatriculaprof);
+
     }
   }
 
@@ -74,16 +75,16 @@ export function AlunosTables({ searchTerm }) {
   if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
-  function handleDelete(id) {
+  function handleDelete(nummatriculaestd) {
     if (window.confirm('Deseja excluir esse aluno?')) {
-      deletarAluno(id);
+      deletarAluno(nummatriculaestd);
     }
   }
-
-
+  
   const estudantesFiltrados = data.estudantes.filter(estudante =>
     estudante.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   return (
     <div className="w-full">
       <div className="max-h-64 overflow-y-auto">
@@ -106,8 +107,8 @@ export function AlunosTables({ searchTerm }) {
                 <td className="px-4 py-2 text-[#09192e]">{aluno.nome}</td>
                 <td className="px-4 py-2">{aluno.idade}</td>
                 <td className="px-4 py-2">{aluno.tipo_curso}</td>
-                <td className="px-4 py-2">{aluno.numDept}</td>
-                <td className="px-4 py-2">{aluno.numMatricula_aconselhador}</td>
+                <td className="px-4 py-2">{aluno.numdept}</td>
+                <td className="px-4 py-2">{aluno.nummatricula_aconselhador}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(aluno.nummatriculaestd)} size={25} className="icon" />
@@ -134,9 +135,9 @@ export function DepartamentosTables({ searchTerm }) {
   if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
-  function handleDelete(id) {
+  function handleDelete(numdept) {
     if (window.confirm('Deseja excluir esse departamento?')) {
-      deletarDepartamento(id);
+      deletarDepartamento(numdept);
     }
   }
   const departamentosFiltrados = data.departamentos.filter(departamento =>
@@ -152,7 +153,6 @@ export function DepartamentosTables({ searchTerm }) {
               <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Nome</th>
               <th className="px-4 py-2">Escritório Principal</th>
-              <th className="px-4 py-2">Líder</th>
               <th className="px-4 py-2">Ações</th>
             </tr>
           </thead>
@@ -162,7 +162,6 @@ export function DepartamentosTables({ searchTerm }) {
                 <td className="px-4 py-2">{dept.numdept}</td>
                 <td className="px-4 py-2 text-[#09192e]">{dept.nome}</td>
                 <td className="px-4 py-2">{dept.escritorio_principal}</td>
-                <td className="px-4 py-2">{dept.lider_dept}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(dept.numdept)} size={25} className="icon" />
@@ -189,9 +188,9 @@ export function ProjetosTables({ searchTerm }) {
   if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
-  function handleDelete(id) {
+  function handleDelete(numprojeto) {
     if (window.confirm('Deseja excluir esse projeto?')) {
-      deletarProjetos(id);
+      deletarProjetos(numprojeto);
     }
   }
   const projetosFiltrados = data.projetos.filter(proj =>

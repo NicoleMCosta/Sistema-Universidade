@@ -97,9 +97,9 @@ export function Cadastrar_aluno({open, setOpen}) {
     nummatriculaestd: '',
     nome: '',
     idade: '',
-    tipo_curso:'',
-    numDept: '',
-    numMatricula_aconselhador: '',
+    tipo_curso: '',
+    numdept: '',
+    nummatricula_aconselhador: '',
   });
 
   const handleFormChange = (e) => {
@@ -113,7 +113,7 @@ export function Cadastrar_aluno({open, setOpen}) {
     mutationFn: criarAluno,
     onSuccess: () => {
       setOpen(false);
-      queryClient.invalidateQueries(['alunos']);
+      queryClient.invalidateQueries(['estudantes']);
     }
   });
 
@@ -150,11 +150,11 @@ export function Cadastrar_aluno({open, setOpen}) {
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Departamento</label>
-                <input className="input_plc" name='numDept' onChange={handleFormChange} value={info.numDept} placeholder='Id do departamento'/>
+                <input className="input_plc" name='numdept' onChange={handleFormChange} value={info.numdept} placeholder='Id do departamento'/>
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Aconselhador</label>
-                <input className="input_plc" name='numMatricula_aconselhador' onChange={handleFormChange} value={info.numMatricula_aconselhador} placeholder='Id do aluno conselheiro'/>
+                <input className="input_plc" name='m' onChange={handleFormChange} value={info.m} placeholder='Id do aluno conselheiro'/>
               </div>
             </div>
           </CardBody>
@@ -177,7 +177,7 @@ export function Cadastrar_departamento({open, setOpen}) {
     numdept: '',
     nome: '',
     escritorio_principal: '',
-    lider_dept:''
+    // lider_dept:''
   });
 
   const handleFormChange = (e) => {
@@ -222,10 +222,10 @@ export function Cadastrar_departamento({open, setOpen}) {
                 <label className='font-medium text-gray-900'>Escritório Principal</label>
                 <input className="input_plc" name='escritorio_principal' onChange={handleFormChange} value={info.escritorio_principal} placeholder='Ex: 202'/>
               </div>
-              <div className='input'>
-                <label className='font-medium text-gray-900'>Escritório Principal</label>
+              {/* <div className='input'>
+                <label className='font-medium text-gray-900'>Líder do Departamento</label>
                 <input className="input_plc" name='lider_dept' onChange={handleFormChange} value={info.lider_dept} placeholder='ID professor responsável'/>
-              </div>
+              </div> */}
             </div>
           </CardBody>
           <CardFooter className="pt-0">
@@ -244,10 +244,10 @@ export function Cadastrar_projeto({open, setOpen}) {
   const queryClient = useQueryClient();
 
   const [info, setInfo] = useState({
-    numprojeto:'',
+    numProjeto:'',
     orgao_financiador: '',
     data_inicio: '',
-    data_finalizacao: '',
+    data_final: '',
     orcamento: '',
     pesquisador_principal: '',
   });
@@ -283,7 +283,7 @@ export function Cadastrar_projeto({open, setOpen}) {
             </div>
             <div className='mb-10'>
               <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-600 rounded-xl bg-transparent" placeholder='ID'
-                onChange={handleFormChange} name='numprojeto' value={info.numprojeto}/>
+                onChange={handleFormChange} name='numProjeto' value={info.numProjeto}/>
             </div>
             <div className='flex-col w-full justify-between gap-4'>
               <div className='input'>
@@ -296,7 +296,7 @@ export function Cadastrar_projeto({open, setOpen}) {
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Data de Finalização</label>
-                <input className="input_plc" name='data_finalizacao' onChange={handleFormChange} value={info.data_finalizacao} placeholder='dd/mm/yyyy'/>
+                <input className="input_plc" name='data_final' onChange={handleFormChange} value={info.data_finalizacao} placeholder='dd/mm/yyyy'/>
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Orçamento</label>
