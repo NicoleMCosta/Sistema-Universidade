@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 //CADASTRO
   export const criarProfessor = async (info) => {
-    const res = await fetch('http://localhost:3000/api/professores', {
+    const res = await fetch('http://localhost:5000/api/professores', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
   export async function criarAluno(data) {
   try {
     console.log("Enviando aluno para API:", data);
-    const response = await fetch('http://localhost:3000/api/estudantes', {
+    const response = await fetch('http://localhost:5000/api/estudantes', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(data)
@@ -44,7 +44,7 @@ import { toast } from "react-toastify";
 
 
   export const criarDepartamento = async (info) => {
-    const res = await fetch('http://localhost:3000/api/departamentos', {
+    const res = await fetch('http://localhost:5000/api/departamentos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ import { toast } from "react-toastify";
   };
 
   export const criarProjeto = async (info) => {
-    const res = await fetch('http://localhost:3000/api/projetos', {
+    const res = await fetch('http://localhost:5000/api/projetos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

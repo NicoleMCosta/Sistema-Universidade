@@ -14,9 +14,11 @@ export function ProfessoresTables({ searchTerm}) {
   if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
+  console.log("Professores recebidos:", data.professores);
+
   const professoresFiltrados = data.professores.filter(prof =>
-    prof.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    prof?.nome?.toLowerCase().includes(searchTerm.toLowerCase())
+  );  
 
   function handleDelete(nummatriculaprof) {
     if (window.confirm('Deseja excluir esse professor?')) {
@@ -141,7 +143,7 @@ export function DepartamentosTables({ searchTerm }) {
     }
   }
   const departamentosFiltrados = data.departamentos.filter(departamento =>
-      departamento.nome.toLowerCase().includes(searchTerm.toLowerCase())
+      departamento?.nome?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   return (

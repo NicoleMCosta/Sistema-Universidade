@@ -1,36 +1,33 @@
-import pg from 'pg'
-import dotenv from "dotenv"
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-const requiredEnvVars = ["PG_USER", "PG_HOST", "PG_DATABASE", "PG_PASSWORD", "PG_PORT"]
+const uri = process.env.MONGO_URI;
 
-requiredEnvVars.forEach((varName) => {
-    if(!process.env[varName]){
-        console.log(` missing required env variable: ${varName}` );
-        process.exit(1)       
-    }
-});
+if (!uri) {
+  console.error("MONGO_URI não definido no .env");
+  process.exit(1);
+}
 
-const db = new pg.Pool({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
-});
+const client = new MongoClient(uri);
+let db = null;
 
-db.connect()
-    .then(() => console.log("Connected with the database"))
-    .catch((err) => {
-        console.log("Could not connect with the database", err);
-        process.exit(1)
-    })
-
-db.on("error", (err) => {
-    console.log("Database error:", err);
+export async function connectToMongo() {
+  try {
+    await client.connect();
+    db = client.db(process.env.MONGO_DB_NAME || "Universidade");
+    console.log("Conectado ao MongoDB");
+    return db;
+  } catch (err) {
+    console.error("Erro ao conectar ao MongoDB:", err);
     process.exit(1);
-});
+  }
+}
 
-export const query = (text, params) => db.query(text, params);// query() ao inves de db.query()
-
+export function getDb() {
+  if (!db) {
+    throw new Error("Você deve conectar primeiro usando connectToMongo()");
+  }
+  return db;
+}
