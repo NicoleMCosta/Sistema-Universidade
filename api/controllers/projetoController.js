@@ -31,21 +31,71 @@ export async function atualizar(req, res, next) {
   try {
     const { numProjeto } = req.params;
     const { orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal } = req.body;
-    const resultado = await atualizarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal);
-    if (!resultado) return res.status(404).json({ erro: "Projeto não encontrado" });
-    res.status(200).json(resultado);
+
+    console.log('Iniciando atualização do projeto:', numProjeto);
+    
+    const resultado = await atualizarProjeto(
+      numProjeto,
+      orgao_financiador,
+      data_inicio,
+      data_final,
+      orcamento,
+      pesquisador_principal
+    );
+
+    if (!resultado) {
+      console.warn('Projeto não encontrado para atualização');
+      return res.status(404).json({ 
+        success: false,
+        erro: "Projeto não encontrado",
+        details: {
+          numProjeto,
+          tipo: typeof numProjeto
+        }
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: resultado
+    });
   } catch (erro) {
-    next(criarErro(500, "Erro ao atualizar projeto"));
+    console.error('Erro no controller ao atualizar projeto:', erro);
+    next(criarErro(500, {
+      message: "Erro ao atualizar projeto",
+      technicalDetails: erro.message
+    }));
   }
 }
 
 export async function deletar(req, res, next) {
   try {
     const { numProjeto } = req.params;
+    console.log('Iniciando deleção do projeto:', numProjeto);
+
     const resultado = await deletarProjeto(numProjeto);
-    if (!resultado) return res.status(404).json({ erro: "Projeto não encontrado" });
-    res.status(200).json({ message: "Projeto deletado com sucesso" });
+    
+    if (!resultado) {
+      console.warn('Projeto não encontrado para deleção');
+      return res.status(404).json({ 
+        success: false,
+        erro: "Projeto não encontrado",
+        details: {
+          numProjeto,
+          tipo: typeof numProjeto
+        }
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Projeto deletado com sucesso"
+    });
   } catch (erro) {
-    next(criarErro(500, "Erro ao deletar projeto"));
+    console.error('Erro no controller ao deletar projeto:', erro);
+    next(criarErro(500, {
+      message: "Erro ao deletar projeto",
+      technicalDetails: erro.message
+    }));
   }
 }

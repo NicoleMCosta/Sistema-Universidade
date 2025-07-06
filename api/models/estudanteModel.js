@@ -6,13 +6,18 @@ const COLLECTION = "estudantes";
 
 export async function buscarTodosEstudantes() {
   const db = getDb();
-  return await db.collection(COLLECTION).findOne().toArray();
+  try {
+    const estudantes = await db.collection(COLLECTION).find().toArray();
+    return estudantes || []; 
+  } catch (error) {
+    console.error('Erro ao buscar estudantes:', error);
+    return []; 
+  }
 }
-
 
 export async function criarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador) {
   const db = getDb();
-  const novoEstudante = { numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador };
+  const novoEstudante = { numMatriculaEstd: parseInt(numMatriculaEstd), nome, idade, tipo_curso, numDept, numMatricula_aconselhador };
 
   const resultado = await db.collection(COLLECTION).insertOne(novoEstudante);
   return { _id: resultado.insertedId, ...novoEstudante};
@@ -23,30 +28,50 @@ export async function buscarEstudantePorMat(numMatriculaEstd){
   return await db.collection(COLLECTION).findOne({numMatriculaEstd: parseInt(numMatriculaEstd) });
 }
 
-export async function atualizarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador)  {
+export async function atualizarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador) {
   const db = getDb();
+  const matriculaNum = parseInt(numMatriculaEstd);
 
   const atualizacao = {
-    ...(numMatriculaEstd && {numMatriculaEstd}),
     ...(nome && { nome }),
+    ...(idade && { idade: Number(idade) }),
     ...(tipo_curso && { tipo_curso }),
-    ...(numDept && { numDept }),
-    ...( numMatricula_aconselhador && { numMatricula_aconselhador })
+    ...(numDept && { numDept: Number(numDept) }),
+    ...(numMatricula_aconselhador && { numMatricula_aconselhador: Number(numMatricula_aconselhador) })
   };
 
-  if (Object.keys(atualizacao).length === 0) return null;
+  console.log('Buscando estudante com matrícula:', matriculaNum);
+  console.log('Dados de atualização:', atualizacao);
 
-  const resultado = await db.collection(COLLECTION).findOneAndUpdate(
-    { numMatriculaEstd: parseInt(numMatriculaEstd) },
-    { $set: atualizacao },
-    { returnDocument: "after" }
-  );
+  try {
+    const resultado = await db.collection(COLLECTION).findOneAndUpdate(
+      { numMatriculaEstd: matriculaNum },
+      { $set: atualizacao },
+      { 
+        returnDocument: "after",
+        includeResultMetadata: true
+      }
+    );
 
-  return resultado.value;
+    console.log('Resultado completo da operação:', resultado);
+    
+    if (resultado && resultado.value) {
+      console.log('Documento atualizado com sucesso:', resultado.value);
+      return resultado.value;
+    }
+
+    console.log('Nenhum documento foi atualizado');
+    return null;
+  } catch (error) {
+    console.error('Erro durante a atualização:', error);
+    throw error;
+  }
 }
 
 export async function deletarEstudante(numMatriculaEstd) {
   const db = getDb();
-  const resultado = await db.collection(COLLECTION).findOneAndDelete({numMatriculaEstd: parseInt(numMatriculaEstd) });
-  return resultado.value;
+  const resultado = await db.collection(COLLECTION).deleteOne({
+    numMatriculaEstd: parseInt(numMatriculaEstd)
+  });
+  return resultado.deletedCount > 0;
 }

@@ -78,7 +78,7 @@ import { toast } from "react-toastify";
 
 //UPDATE
 export const updateProfessor = async (info) => {
-  const res = await fetch(`${baseUrl}/api/professores/${info.nummatriculaprof}`, {
+  const res = await fetch(`${baseUrl}/api/professores/${info.numMatriculaProf}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -95,24 +95,38 @@ export const updateProfessor = async (info) => {
 
 
 export const updateAluno = async (info) => {
-    const res = await fetch(`${baseUrl}/api/estudantes/${info.nummatriculaestd}`, {
+  console.log('Dados enviados para atualização:', info);
+  
+  try {
+    const res = await fetch(`${baseUrl}/api/estudantes/${info.numMatriculaEstd}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(info),
     });
-  
+
+    console.log('Status da resposta:', res.status);
+    
     if (!res.ok) {
-      throw new Error("Erro ao atualizar aluno");
+      const errorData = await res.json();
+      console.error('Detalhes do erro:', errorData);
+      throw new Error(errorData.erro || `Erro ao atualizar aluno (status ${res.status})`);
     }
-  
-    return res.json();
-  };
-  
+
+    return await res.json();
+  } catch (error) {
+    console.error('Erro completo na requisição:', {
+      message: error.message,
+      request: `${baseUrl}/api/estudantes/${info.numMatriculaEstd}`,
+      payload: info
+    });
+    throw error;
+  }
+};
 
 export const updateDepartamento = async (info) => {
-    const res = await fetch(`${baseUrl}/api/departamentos/${info.numdept}`, {
+    const res = await fetch(`${baseUrl}/api/departamentos/${info.numDept}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -129,7 +143,7 @@ export const updateDepartamento = async (info) => {
 
 
 export const updateProjeto = async (info) => {
-    const res = await fetch(`${baseUrl}/api/projetos/${info.numprojeto}`, {
+    const res = await fetch(`${baseUrl}/api/projetos/${info.numProjeto}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -144,32 +158,26 @@ export const updateProjeto = async (info) => {
     return res.json();
   };
 
-//DELETE
 export function useDeletar(entidade) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id) => {
-      console.log(`${id}`);
       const response = await fetch(`${baseUrl}/api/${entidade}/${id}`, {
-        method: 'DELETE',
-        headers: {
-          "Content-Type": "application/json"
-        }
+        method: 'DELETE'
       });
 
-      const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || `Erro ao deletar ${entidade}`);
+        const errorData = await response.json();
+        throw new Error(errorData.erro || `Erro ao deletar ${entidade}`);
       }
 
-      return data;
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
     onError: (error) => {
-      console.error('🚨 Erro na mutação:', error.message);
       toast.error(error.message);
     }
   });

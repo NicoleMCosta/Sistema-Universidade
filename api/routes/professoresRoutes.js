@@ -8,6 +8,8 @@ import {
 
 const router = express.Router();
 
+
+
 router.post('/', criar);
 router.get('/:numMatriculaProf', buscarPorId);
 router.put('/:numMatriculaProf', atualizar);

@@ -9,25 +9,60 @@ import { criarErro } from "../middlewares/erros.js";
 export async function criar(req, res, next) {
   try {
     const { numDept, nome, escritorio_principal } = req.body;
-    if (!numDept || !nome || !escritorio_principal)
-      return res.status(400).json({ erro: "Todos os campos são obrigatórios" });
+    console.log('Criando departamento:', { numDept, nome, escritorio_principal });
+
+    if (!numDept || !nome || !escritorio_principal) {
+      return res.status(400).json({
+        success: false,
+        erro: "Todos os campos são obrigatórios",
+        required: ["numDept", "nome", "escritorio_principal"]
+      });
+    }
 
     const novo = await criarDepartamento(numDept, nome, escritorio_principal);
-    res.status(201).json(novo);
+    
+    res.status(201).json({
+      success: true,
+      data: novo
+    });
   } catch (err) {
-    next(criarErro(500, "Erro ao criar departamento"));
+    console.error('Erro no controller ao criar departamento:', err);
+    next(criarErro(500, {
+      message: "Erro ao criar departamento",
+      technicalDetails: err.message
+    }));
   }
 }
 
 export async function buscarPorId(req, res, next) {
   try {
     const { numDept } = req.params;
-    const departamento = await buscarDepartamentoPorId(numDept);
-    if (!departamento) return res.status(404).json({ erro: "Departamento não encontrado" });
+    console.log('Buscando departamento com numDept:', numDept);
 
-    res.status(200).json(departamento);
+    const departamento = await buscarDepartamentoPorId(numDept);
+    
+    if (!departamento) {
+      console.warn('Departamento não encontrado');
+      return res.status(404).json({ 
+        success: false,
+        erro: "Departamento não encontrado",
+        details: {
+          numDept,
+          tipo: typeof numDept
+        }
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: departamento
+    });
   } catch (err) {
-    next(criarErro(500, "Erro ao buscar departamento"));
+    console.error('Erro no controller ao buscar departamento:', err);
+    next(criarErro(500, {
+      message: "Erro ao buscar departamento",
+      technicalDetails: err.message
+    }));
   }
 }
 
@@ -35,24 +70,64 @@ export async function atualizar(req, res, next) {
   try {
     const { numDept } = req.params;
     const { nome, escritorio_principal } = req.body;
+    console.log('Atualizando departamento:', numDept);
+    console.log('Novos valores:', { nome, escritorio_principal });
 
     const atualizado = await atualizarDepartamento(numDept, nome, escritorio_principal);
-    if (!atualizado) return res.status(404).json({ erro: "Departamento não encontrado" });
+    
+    if (!atualizado) {
+      console.warn('Departamento não encontrado para atualização');
+      return res.status(404).json({ 
+        success: false,
+        erro: "Departamento não encontrado",
+        details: {
+          numDept,
+          tipo: typeof numDept
+        }
+      });
+    }
 
-    res.status(200).json(atualizado);
+    res.status(200).json({
+      success: true,
+      data: atualizado
+    });
   } catch (err) {
-    next(criarErro(500, "Erro ao atualizar departamento"));
+    console.error('Erro no controller ao atualizar departamento:', err);
+    next(criarErro(500, {
+      message: "Erro ao atualizar departamento",
+      technicalDetails: err.message
+    }));
   }
 }
 
 export async function deletar(req, res, next) {
   try {
     const { numDept } = req.params;
-    const deletado = await deletarDepartamento(numDept);
-    if (!deletado) return res.status(404).json({ erro: "Departamento não encontrado" });
+    console.log('Deletando departamento:', numDept);
 
-    res.status(200).json({ message: "Departamento deletado com sucesso" });
+    const deletado = await deletarDepartamento(numDept);
+    
+    if (!deletado) {
+      console.warn('Departamento não encontrado para deleção');
+      return res.status(404).json({ 
+        success: false,
+        erro: "Departamento não encontrado",
+        details: {
+          numDept,
+          tipo: typeof numDept
+        }
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Departamento deletado com sucesso"
+    });
   } catch (err) {
-    next(criarErro(500, "Erro ao deletar departamento"));
+    console.error('Erro no controller ao deletar departamento:', err);
+    next(criarErro(500, {
+      message: "Erro ao deletar departamento",
+      technicalDetails: err.message
+    }));
   }
 }

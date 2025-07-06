@@ -42,30 +42,54 @@ export async function atualizar(req, res, next) {
     const { numMatriculaEstd } = req.params;
     const { nome, idade, tipo_curso, numDept, numMatricula_aconselhador } = req.body;
 
-    if (!numMatriculaEstd) return res.status(400).json({ erro: 'Número de matrícula não fornecido' });
+    console.log('Iniciando atualização para matrícula:', numMatriculaEstd);
+    console.log('Tipo da matrícula no controller:', typeof numMatriculaEstd);
 
-    const estudanteAtualizado = await atualizarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador);
+    const resultado = await atualizarEstudante(
+      numMatriculaEstd,
+      nome,
+      idade,
+      tipo_curso,
+      numDept,
+      numMatricula_aconselhador
+    );
 
-    if (!estudanteAtualizado) return res.status(404).json({ erro: "Estudante não encontrado para atualizar" });
+    if (!resultado) {
+      console.warn('Estudante não encontrado para atualização');
+      return res.status(404).json({
+        success: false,
+        erro: "Estudante não encontrado",
+        details: {
+          matriculaProcurada: numMatriculaEstd,
+          tipoMatricula: typeof numMatriculaEstd
+        }
+      });
+    }
 
-    res.status(200).json(estudanteAtualizado);
+    return res.status(200).json({
+      success: true,
+      data: resultado
+    });
   } catch (error) {
-    return next(criarErro(500, 'Erro ao atualizar Aluno'));
+    console.error('Erro no controller ao atualizar estudante:', error);
+    return next(criarErro(500, {
+      message: "Erro ao atualizar aluno",
+      technicalDetails: error.message
+    }));
   }
 }
 
 export async function deletar(req, res, next) {
   try {
     const { numMatriculaEstd } = req.params;
+    const resultado = await deletarEstudante(numMatriculaEstd);
+    
+    if (!resultado) {
+      return res.status(404).json({ erro: "Estudante não encontrado" });
+    }
 
-    if (!numMatriculaEstd) return res.status(400).json({ erro: 'Número de matrícula não fornecido' });
-
-    const estudanteDeletado = await deletarEstudante(numMatriculaEstd);
-
-    if (!estudanteDeletado) return res.status(404).json({ erro: 'Estudante não encontrado para deletar' });
-
-    res.status(200).json({ message: 'Aluno deletado com sucesso' });
+    res.status(200).json({ success: true, message: 'Aluno deletado com sucesso' });
   } catch (error) {
-    return next(criarErro(500, 'Erro ao deletar Aluno'));
+    next(criarErro(500, 'Erro ao deletar Aluno'));
   }
 }

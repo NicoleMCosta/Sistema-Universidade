@@ -20,12 +20,13 @@ export function ProfessoresTables({ searchTerm}) {
     prof?.nome?.toLowerCase().includes(searchTerm.toLowerCase())
   );  
 
-  function handleDelete(nummatriculaprof) {
+  function handleDelete(numMatriculaProf) {
+  console.log("🧪 ID recebido no handleDelete:", numMatriculaProf);
     if (window.confirm('Deseja excluir esse professor?')) {
-      deletarProfessor(nummatriculaprof);
-
+      deletarProfessor(numMatriculaProf);
     }
   }
+
 
   return (
     <div className="w-full">
@@ -44,8 +45,8 @@ export function ProfessoresTables({ searchTerm}) {
           </thead>
           <tbody>
             {professoresFiltrados.map((prof) => (
-              <tr key={prof.nummatriculaprof} className="hover:bg-gray-300 text-gray-600">
-                <td className="px-4 py-2">{prof.nummatriculaprof}</td>
+              <tr key={prof.numMatriculaProf} className="hover:bg-gray-300 text-gray-600">
+                <td className="px-4 py-2">{prof.numMatriculaProf}</td>
                 <td className="px-4 py-2 text-[#09192e]">{prof.nome}</td>
                 <td className="px-4 py-2">{prof.idade}</td>
                 <td className="px-4 py-2">{prof.especialidade_pesquisa}</td>
@@ -53,7 +54,7 @@ export function ProfessoresTables({ searchTerm}) {
                 <td className="px-4 py-2">{prof.tempo}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
-                    <RiDeleteBin6Fill onClick={() => handleDelete(prof.nummatriculaprof)} size={25} className="icon" />
+                    <RiDeleteBin6Fill onClick={() => handleDelete(prof.numMatriculaProf)} size={25} className="icon" />
                     <FaUserEdit size={25} className="icon" onClick={() => setProfessorSelecionado(prof)}/>
                   </div>
                 </td>
@@ -104,8 +105,8 @@ export function AlunosTables({ searchTerm }) {
           </thead>
           <tbody>
             {estudantesFiltrados.map((aluno) => (
-              <tr key={aluno.nummatriculaestd} className="hover:bg-gray-300 text-gray-600">
-                <td className="px-4 py-2">{aluno.nummatriculaestd}</td>
+              <tr key={aluno.numMatriculaEstd} className="hover:bg-gray-300 text-gray-600">
+                <td className="px-4 py-2">{aluno.numMatriculaEstd}</td>
                 <td className="px-4 py-2 text-[#09192e]">{aluno.nome}</td>
                 <td className="px-4 py-2">{aluno.idade}</td>
                 <td className="px-4 py-2">{aluno.tipo_curso}</td>
@@ -113,7 +114,7 @@ export function AlunosTables({ searchTerm }) {
                 <td className="px-4 py-2">{aluno.nummatricula_aconselhador}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
-                    <RiDeleteBin6Fill onClick={() => handleDelete(aluno.nummatriculaestd)} size={25} className="icon" />
+                    <RiDeleteBin6Fill onClick={() => handleDelete(aluno.numMatriculaEstd)} size={25} className="icon" />
                     <FaUserEdit size={25} className="icon" onClick={() => setAlunoSelecionado(aluno)}/>
                   </div>
                 </td>
@@ -160,13 +161,13 @@ export function DepartamentosTables({ searchTerm }) {
           </thead>
           <tbody>
             {departamentosFiltrados.map((dept) => (
-              <tr key={dept.numdept} className="hover:bg-gray-300 text-gray-600">
-                <td className="px-4 py-2">{dept.numdept}</td>
+              <tr key={dept.numDept} className="hover:bg-gray-300 text-gray-600">
+                <td className="px-4 py-2">{dept.numDept}</td>
                 <td className="px-4 py-2 text-[#09192e]">{dept.nome}</td>
                 <td className="px-4 py-2">{dept.escritorio_principal}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
-                    <RiDeleteBin6Fill onClick={() => handleDelete(dept.numdept)} size={25} className="icon" />
+                    <RiDeleteBin6Fill onClick={() => handleDelete(dept.numDept)} size={25} className="icon" />
                     <FaUserEdit size={25} className="icon" onClick={() => setDepartamentoSelecionado(dept)}/>
                   </div>
                 </td>
@@ -184,6 +185,7 @@ export function DepartamentosTables({ searchTerm }) {
 
 export function ProjetosTables({ searchTerm }) {
   const { data, isPending } = DadosDashboard();
+  console.log('Dados completos recebidos:', data);
   const { mutate: deletarProjetos, isPending: isDeletando } = useDeletar('projetos');
   const [projetoSelecionado, setProjetoSelecionado] = useState(null);
 
@@ -195,9 +197,9 @@ export function ProjetosTables({ searchTerm }) {
       deletarProjetos(numprojeto);
     }
   }
-  const projetosFiltrados = data.projetos.filter(proj =>
-      proj.numprojeto?.toString().includes(searchTerm)
-    );
+    const projetosFiltrados = data?.projetos?.filter(proj => 
+    proj.numProjeto?.toString().includes(searchTerm)
+  ) || [];
   return (
     <div className="w-full">
       <div className="max-h-64 overflow-y-auto">
@@ -215,8 +217,8 @@ export function ProjetosTables({ searchTerm }) {
           </thead>
           <tbody>
             {projetosFiltrados.map((proj) => (
-              <tr key={proj.numprojeto} className="hover:bg-gray-300 text-gray-600">
-                <td className="px-4 py-2">{proj.numprojeto}</td>
+              <tr key={proj.numProjeto} className="hover:bg-gray-300 text-gray-600">
+                <td className="px-4 py-2">{proj.numProjeto}</td>
                 <td className="px-4 py-2 text-[#09192e]">{proj.orgao_financiador}</td>
                 <td className="px-4 py-2">{proj.data_inicio}</td>
                 <td className="px-4 py-2">{proj.data_final}</td>
@@ -224,7 +226,7 @@ export function ProjetosTables({ searchTerm }) {
                 <td className="px-4 py-2">{proj.pesquisador_principal}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
-                    <RiDeleteBin6Fill onClick={() => handleDelete(proj.numprojeto)} size={25} className="icon" />
+                    <RiDeleteBin6Fill onClick={() => handleDelete(proj.numProjeto)} size={25} className="icon" />
                     <FaUserEdit size={25} className="icon" onClick={() => setProjetoSelecionado(proj)}/>
                   </div>
                 </td>

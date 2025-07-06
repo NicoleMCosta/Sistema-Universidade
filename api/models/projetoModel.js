@@ -5,13 +5,18 @@ const COLLECTION = "projetos";
 
 export async function buscarTodosProjetos() {
   const db = getDb();
-  const res = await db.collection(COLLECTION).find().toArray();
-  return res;
+  try {
+    const res = await db.collection(COLLECTION).find().toArray();
+    return res || [];
+  } catch (error) {
+    console.error('Erro detalhado:', error); 
+    return []; 
+  }
 }
 
 export async function criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal) {
   const db = getDb();
-  const novoProjeto = {numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal};
+  const novoProjeto = {numProjeto: parseInt(numProjeto), orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal};
   const resultado = await db.collection(COLLECTION).insertOne(novoProjeto);
   return { _id: resultado.insertedId, ...novoProjeto};
 }
@@ -24,28 +29,56 @@ export async function buscarProjetoPorId(numProjeto) {
 
 export async function atualizarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal) {
   const db = getDb();
+  const numProjetoInt = parseInt(numProjeto);
+
   const atualizacao = {
-    ...(numProjeto && {numProjeto}),
     ...(orgao_financiador && { orgao_financiador }),
-    ...(data_inicio && {data_inicio}),
+    ...(data_inicio && { data_inicio }),
     ...(data_final && { data_final }),
-    ...(orcamento && { orcamento }),
-    ...( pesquisador_principal && { pesquisador_principal})
+    ...(orcamento && { orcamento: Number(orcamento) }), // Conversão explícita
+    ...(pesquisador_principal && { pesquisador_principal: Number(pesquisador_principal) }) // Conversão explícita
   };
 
-  if (Object.keys(atualizacao).length === 0) return null;
+  console.log('Atualizando projeto:', numProjetoInt);
+  console.log('Dados de atualização:', atualizacao);
 
-  const resultado = await db.collection(COLLECTION).findOneAndUpdate(
-    { numProjeto: parseInt(numProjeto) },
-    { $set: atualizacao },
-    { returnDocument: "after" }
-  );
+  try {
+    const resultado = await db.collection(COLLECTION).findOneAndUpdate(
+      { numProjeto: numProjetoInt },
+      { $set: atualizacao },
+      { 
+        returnDocument: "after",
+        includeResultMetadata: true // Para debug
+      }
+    );
 
-  return resultado.value;
+    console.log('Resultado da atualização:', resultado);
+    
+    if (resultado && resultado.value) {
+      return resultado.value;
+    }
+    return null;
+  } catch (error) {
+    console.error('Erro no model ao atualizar projeto:', error);
+    throw error;
+  }
 }
 
 export async function deletarProjeto(numProjeto) {
   const db = getDb();
-  const res = await db.collection(COLLECTION).findOneAndDelete({numProjeto: parseInt(numProjeto)});
-  return res.value;
+  const numProjetoInt = parseInt(numProjeto);
+
+  console.log('Deletando projeto:', numProjetoInt);
+  
+  try {
+    const resultado = await db.collection(COLLECTION).deleteOne({ 
+      numProjeto: numProjetoInt 
+    });
+    
+    console.log('Resultado da deleção:', resultado);
+    return resultado.deletedCount > 0;
+  } catch (error) {
+    console.error('Erro no model ao deletar projeto:', error);
+    throw error;
+  }
 }
