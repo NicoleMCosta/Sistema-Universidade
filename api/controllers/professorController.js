@@ -8,8 +8,8 @@ import { criarErro } from "../middlewares/erros.js";
 
 export async function criar(req, res, next) {
   try {
-    const { numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo } = req.body;
-    const resultado = await criarProfessor(numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo);
+    const { numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo, numDept } = req.body;
+    const resultado = await criarProfessor(numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo, numDept);
     res.status(201).json(resultado);
 
   } catch (erro) {
@@ -31,7 +31,7 @@ export async function buscarPorId(req, res, next) {
 export async function atualizar(req, res, next) {
   try {
     const { numMatriculaProf } = req.params;
-    const { nome, idade, sala, especialidade_pesquisa, tempo } = req.body;
+    const { nome, idade, sala, especialidade_pesquisa, tempo, numDept } = req.body;
 
     console.log('Iniciando atualização para matrícula:', numMatriculaProf);
     

@@ -8,18 +8,18 @@ import { criarErro } from "../middlewares/erros.js";
 
 export async function criar(req, res, next) {
   try {
-    const { numDept, nome, escritorio_principal } = req.body;
-    console.log('Criando departamento:', { numDept, nome, escritorio_principal });
+    const { numDept, nome, escritorio_principal, numMatriculaProf } = req.body;
+    console.log('Criando departamento:', { numDept, nome, escritorio_principal, numMatriculaProf});
 
-    if (!numDept || !nome || !escritorio_principal) {
+    if (!numDept || !nome || !escritorio_principal || !numMatriculaProf) {
       return res.status(400).json({
         success: false,
         erro: "Todos os campos são obrigatórios",
-        required: ["numDept", "nome", "escritorio_principal"]
+        required: ["numDept", "nome", "escritorio_principal, numMatriculaProf"]
       });
     }
 
-    const novo = await criarDepartamento(numDept, nome, escritorio_principal);
+    const novo = await criarDepartamento(numDept, nome, escritorio_principal, numMatriculaProf);
     
     res.status(201).json({
       success: true,
@@ -69,11 +69,11 @@ export async function buscarPorId(req, res, next) {
 export async function atualizar(req, res, next) {
   try {
     const { numDept } = req.params;
-    const { nome, escritorio_principal } = req.body;
+    const { nome, escritorio_principal, numMatriculaProf} = req.body;
     console.log('Atualizando departamento:', numDept);
-    console.log('Novos valores:', { nome, escritorio_principal });
+    console.log('Novos valores:', { nome, escritorio_principal, numMatriculaProf});
 
-    const atualizado = await atualizarDepartamento(numDept, nome, escritorio_principal);
+    const atualizado = await atualizarDepartamento(numDept, nome, escritorio_principal, numMatriculaProf);
     
     if (!atualizado) {
       console.warn('Departamento não encontrado para atualização');

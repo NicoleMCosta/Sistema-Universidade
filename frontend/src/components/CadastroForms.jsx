@@ -20,6 +20,7 @@ export function Cadastrar_professor({open, setOpen}) {
     especialidade_pesquisa:'',
     sala: '',
     tempo: '',
+    numDept: ''
   });
   
   const handleFormChange = (e) => {
@@ -37,7 +38,7 @@ export function Cadastrar_professor({open, setOpen}) {
     }
   });  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => { 
     e.preventDefault();
     mutation.mutate(info); 
   }
@@ -76,6 +77,10 @@ export function Cadastrar_professor({open, setOpen}) {
                 <label className='font-medium text-gray-900'>Tempo</label>
                 <input className="input_plc" name='tempo' placeholder='Horas totais' onChange={handleFormChange} value={info.tempo}/>
               </div>
+              <div className='input'>
+                <label className='font-medium text-gray-900'>Departamento</label>
+                <input className="input_plc" name='numDept' placeholder='ID do Departamento' onChange={handleFormChange} value={info.numDept}/>
+              </div>
             </div>
           </CardBody>
           <CardFooter className="pt-0">
@@ -100,6 +105,8 @@ export function Cadastrar_aluno({open, setOpen}) {
     tipo_curso: '',
     numDept: '',
     numMatricula_aconselhador: '',
+    numMatriculaProf: '',
+    numProjeto: ''
   });
 
   const handleFormChange = (e) => {
@@ -157,6 +164,14 @@ export function Cadastrar_aluno({open, setOpen}) {
                 <label className='font-medium text-gray-900'>Aconselhador</label>
                 <input className="input_plc" name='numMatricula_aconselhador' onChange={handleFormChange} value={info.numMatricula_aconselhador} placeholder='Id do aluno conselheiro'/>
               </div>
+              <div className='input'>
+                <label className='font-medium text-gray-900'>Professor Supervisor</label>
+                <input className="input_plc" name='numMatriculaProf' onChange={handleFormChange} value={info.numMatriculaProf} placeholder='Id do supervisor de projeto'/>
+              </div>
+              <div className='input'>
+                <label className='font-medium text-gray-900'>Projeto</label>
+                <input className="input_plc" name='numProjeto' onChange={handleFormChange} value={info.numProjeto} placeholder='Id de projeto'/>
+              </div>
             </div>
           </CardBody>
           <CardFooter className="pt-0">
@@ -178,7 +193,7 @@ export function Cadastrar_departamento({open, setOpen}) {
     numDept: '',
     nome: '',
     escritorio_principal: '',
-    // lider_dept:''
+    numMatriculaProf:''
   });
 
   const handleFormChange = (e) => {
@@ -223,10 +238,10 @@ export function Cadastrar_departamento({open, setOpen}) {
                 <label className='font-medium text-gray-900'>Escritório Principal</label>
                 <input className="input_plc" name='escritorio_principal' onChange={handleFormChange} value={info.escritorio_principal} placeholder='Ex: 202'/>
               </div>
-              {/* <div className='input'>
+              <div className='input'>
                 <label className='font-medium text-gray-900'>Líder do Departamento</label>
-                <input className="input_plc" name='lider_dept' onChange={handleFormChange} value={info.lider_dept} placeholder='ID professor responsável'/>
-              </div> */}
+                <input className="input_plc" name='numMatriculaProf' onChange={handleFormChange} value={info.numMatriculaProf} placeholder='ID professor responsável'/>
+              </div>
             </div>
           </CardBody>
           <CardFooter className="pt-0">
@@ -251,6 +266,8 @@ export function Cadastrar_projeto({open, setOpen}) {
     data_final: '',
     orcamento: '',
     pesquisador_principal: '',
+    participantes: '',
+    assistentes_pesquisa: ''
   });
 
   const handleFormChange = (e) => {
@@ -270,8 +287,28 @@ export function Cadastrar_projeto({open, setOpen}) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutation.mutate(info);
-  }
+  
+    const participantesNumericos = info.participantes
+      .split(',')
+      .map((id) => parseInt(id.trim(), 10))
+      .filter((id) => !isNaN(id));
+    
+    const assistentesNumericos = info.assistentes_pesquisa
+      .split(',')
+      .map((id) => parseInt(id.trim(), 10))
+      .filter((id) => !isNaN(id));
+    
+    const dadosParaEnviar = {
+      ...info,
+      numProjeto: parseInt(info.numProjeto, 10),
+      orcamento: parseFloat(info.orcamento),
+      participantes: participantesNumericos, 
+      assistentes_pesquisa: assistentesNumericos
+    };
+  
+    mutation.mutate(dadosParaEnviar);
+  };
+  
 
   return (
     <Dialog size="lg" open={open} handler={handleOpen} className="flex items-center justify-center bg-transparent shadow-none">
@@ -306,6 +343,14 @@ export function Cadastrar_projeto({open, setOpen}) {
               <div className='input'>
                 <label className='font-medium text-gray-900'>Pesquisador Principal</label>
                 <input className="input_plc" name='pesquisador_principal' onChange={handleFormChange} value={info.pesquisador_principal} placeholder='Id do professor'/>
+              </div>
+              <div className='input'>
+                <label className='font-medium text-gray-900'>Professores participantes</label>
+                  <input className="input_plc" name='participantes' placeholder='id1; id2; id3' value={info.participantes} onChange={handleFormChange}/>
+              </div>
+              <div className='input'>
+                <label className='font-medium text-gray-900'>Assistentes de Pesquisa</label>
+                  <input className="input_plc" name='assistentes_pesquisa' placeholder='id1; id2; id3' value={info.assistentes_pesquisa} onChange={handleFormChange}/>
               </div>
             </div>
           </CardBody>

@@ -40,6 +40,7 @@ export function ProfessoresTables({ searchTerm}) {
               <th className="px-4 py-2">Especialidade</th>
               <th className="px-4 py-2">Sala</th>
               <th className="px-4 py-2">Tempo</th>
+              <th className="px-4 py-2">Depto</th>
               <th className="px-4 py-2">Ações</th>
             </tr>
           </thead>
@@ -52,6 +53,7 @@ export function ProfessoresTables({ searchTerm}) {
                 <td className="px-4 py-2">{prof.especialidade_pesquisa}</td>
                 <td className="px-4 py-2">{prof.sala}</td>
                 <td className="px-4 py-2">{prof.tempo}</td>
+                <td className="px-4 py-2">{prof.numDept}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(prof.numMatriculaProf)} size={25} className="icon" />
@@ -78,9 +80,9 @@ export function AlunosTables({ searchTerm }) {
   if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
-  function handleDelete(nummatriculaestd) {
+  function handleDelete(numMatriculaEstd) {
     if (window.confirm('Deseja excluir esse aluno?')) {
-      deletarAluno(nummatriculaestd);
+      deletarAluno(numMatriculaEstd);
     }
   }
   
@@ -99,7 +101,9 @@ export function AlunosTables({ searchTerm }) {
               <th className="px-4 py-2">Idade</th>
               <th className="px-4 py-2">Curso</th>
               <th className="px-4 py-2">Departamento</th>
-              <th className="px-4 py-2">Aconselhador</th>
+              <th className="px-4 py-2">ID Aconselhador</th>
+              <th className="px-4 py-2">ID Supervisor</th>
+              <th className="px-4 py-2">ID Projeto</th>
               <th className="px-4 py-2">Ações</th>
             </tr>
           </thead>
@@ -110,8 +114,10 @@ export function AlunosTables({ searchTerm }) {
                 <td className="px-4 py-2 text-[#09192e]">{aluno.nome}</td>
                 <td className="px-4 py-2">{aluno.idade}</td>
                 <td className="px-4 py-2">{aluno.tipo_curso}</td>
-                <td className="px-4 py-2">{aluno.numdept}</td>
-                <td className="px-4 py-2">{aluno.nummatricula_aconselhador}</td>
+                <td className="px-4 py-2">{aluno.numDept}</td>
+                <td className="px-4 py-2">{aluno.numMatricula_aconselhador}</td>
+                <td className="px-4 py-2">{aluno.numMatriculaProf}</td>
+                <td className="px-4 py-2">{aluno.numProjeto}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(aluno.numMatriculaEstd)} size={25} className="icon" />
@@ -138,9 +144,9 @@ export function DepartamentosTables({ searchTerm }) {
   if (isPending || isDeletando) return <p>Loading...</p>;
   if (!data) return <p>Erro ao carregar dados.</p>;
 
-  function handleDelete(numdept) {
+  function handleDelete(numDept) {
     if (window.confirm('Deseja excluir esse departamento?')) {
-      deletarDepartamento(numdept);
+      deletarDepartamento(numDept);
     }
   }
   const departamentosFiltrados = data.departamentos.filter(departamento =>
@@ -156,6 +162,7 @@ export function DepartamentosTables({ searchTerm }) {
               <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Nome</th>
               <th className="px-4 py-2">Escritório Principal</th>
+              <th className="px-4 py-2">Líder</th>
               <th className="px-4 py-2">Ações</th>
             </tr>
           </thead>
@@ -165,6 +172,7 @@ export function DepartamentosTables({ searchTerm }) {
                 <td className="px-4 py-2">{dept.numDept}</td>
                 <td className="px-4 py-2 text-[#09192e]">{dept.nome}</td>
                 <td className="px-4 py-2">{dept.escritorio_principal}</td>
+                <td className="px-4 py-2">{dept.numMatriculaProf}</td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(dept.numDept)} size={25} className="icon" />
@@ -212,6 +220,8 @@ export function ProjetosTables({ searchTerm }) {
               <th className="px-4 py-2">Final</th>
               <th className="px-4 py-2">Orçamento</th>
               <th className="px-4 py-2">Pesquisador Principal</th>
+              <th className="px-4 py-2">Professores Participantes</th>
+              <th className="px-4 py-2">Assistentes de Pesquisa</th>
               <th className="px-4 py-2">Ações</th>
             </tr>
           </thead>
@@ -224,6 +234,14 @@ export function ProjetosTables({ searchTerm }) {
                 <td className="px-4 py-2">{proj.data_final}</td>
                 <td className="px-4 py-2">{proj.orcamento}</td>
                 <td className="px-4 py-2">{proj.pesquisador_principal}</td>
+                <td className="px-4 py-2">
+                  {(proj.participantes && proj.participantes.length > 0) 
+                    ? proj.participantes.join(', ') : 'Nenhum participante'}
+                </td>
+                <td className="px-4 py-2">
+                  {(proj.assistentes_pesquisa && proj.assistentes_pesquisa.length > 0) 
+                    ? proj.assistentes_pesquisa.join(', ') : 'Nenhum assistente de pesquisa'}
+                </td>
                 <td className="px-4 py-2">
                   <div className="flex flex-row gap-5">
                     <RiDeleteBin6Fill onClick={() => handleDelete(proj.numProjeto)} size={25} className="icon" />

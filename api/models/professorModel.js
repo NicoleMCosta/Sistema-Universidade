@@ -9,10 +9,11 @@ export async function buscarTodosProfessores() {
   return res;
 }
 
-export async function criarProfessor(numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo) {
+
+export async function criarProfessor(numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo, numDept) {
   const db = getDb();
   
-  const novoProfessor = {numMatriculaProf: parseInt(numMatriculaProf), nome, idade, sala, especialidade_pesquisa, tempo};
+  const novoProfessor = {numMatriculaProf: parseInt(numMatriculaProf), nome, idade, sala, especialidade_pesquisa, tempo, numDept: parseInt(numDept)};
   console.log(novoProfessor);
   
   const resultado = await db.collection(COLLECTION).insertOne(novoProfessor);
@@ -32,16 +33,19 @@ export async function buscarProfessorPorMatricula(numMatriculaProf) {
   const db = getDb();
   return await db.collection(COLLECTION).findOne({ numMatriculaProf: parseInt(numMatriculaProf) });
 }
-export async function atualizarProfessor(numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo) {
+
+export async function atualizarProfessor(numMatriculaProf, nome, idade, sala, especialidade_pesquisa, tempo, numDept) {
   const db = getDb();
   const matriculaNum = parseInt(numMatriculaProf);
+  const numDeptConvertido = parseInt(numDept);
 
   const atualizacao = {
     ...(nome && { nome }),
     ...(idade && { idade }),
     ...(sala && { sala }),
     ...(especialidade_pesquisa && { especialidade_pesquisa }),
-    ...(tempo && { tempo })
+    ...(tempo && { tempo }),
+    ...(numDept && { numDeptConvertido })
   };
 
   console.log('Buscando professor com matrícula:', matriculaNum);
@@ -72,6 +76,7 @@ export async function atualizarProfessor(numMatriculaProf, nome, idade, sala, es
     throw error;
   }
 }
+
 export async function deletarProfessor(numMatriculaProf) {
    const db = getDb();
   const resultado = await db.collection(COLLECTION).deleteOne({

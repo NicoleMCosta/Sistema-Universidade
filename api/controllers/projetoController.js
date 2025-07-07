@@ -8,8 +8,8 @@ import { criarErro } from "../middlewares/erros.js";
 
 export async function criar(req, res, next) {
   try {
-    const { numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal } = req.body;
-    const resultado = await criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal);
+    const { numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes, assistentes_pesquisa } = req.body;
+    const resultado = await criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes, assistentes_pesquisa);
     res.status(201).json(resultado);
   } catch (erro) {
     next(criarErro(500, "Erro ao criar projeto"));
@@ -30,17 +30,18 @@ export async function buscarPorId(req, res, next) {
 export async function atualizar(req, res, next) {
   try {
     const { numProjeto } = req.params;
-    const { orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal } = req.body;
+    const { orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes, assistentes_pesquisa} = req.body;
 
     console.log('Iniciando atualização do projeto:', numProjeto);
-    
     const resultado = await atualizarProjeto(
       numProjeto,
       orgao_financiador,
       data_inicio,
       data_final,
       orcamento,
-      pesquisador_principal
+      pesquisador_principal,
+      participantes,
+      assistentes_pesquisa
     );
 
     if (!resultado) {
@@ -67,6 +68,7 @@ export async function atualizar(req, res, next) {
     }));
   }
 }
+
 
 export async function deletar(req, res, next) {
   try {

@@ -14,9 +14,9 @@ export async function buscarTodosProjetos() {
   }
 }
 
-export async function criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal) {
+export async function criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes =[], assistentes_pesquisa =[]) {
   const db = getDb();
-  const novoProjeto = {numProjeto: parseInt(numProjeto), orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal};
+  const novoProjeto = {numProjeto: parseInt(numProjeto), orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal: parseInt(pesquisador_principal), participantes, assistentes_pesquisa};
   const resultado = await db.collection(COLLECTION).insertOne(novoProjeto);
   return { _id: resultado.insertedId, ...novoProjeto};
 }
@@ -27,17 +27,21 @@ export async function buscarProjetoPorId(numProjeto) {
   return res;
 }
 
-export async function atualizarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal) {
+export async function atualizarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes = [], assistentes_pesquisa=[]) {
   const db = getDb();
+  
   const numProjetoInt = parseInt(numProjeto);
 
   const atualizacao = {
     ...(orgao_financiador && { orgao_financiador }),
     ...(data_inicio && { data_inicio }),
     ...(data_final && { data_final }),
-    ...(orcamento && { orcamento: Number(orcamento) }), // Conversão explícita
-    ...(pesquisador_principal && { pesquisador_principal: Number(pesquisador_principal) }) // Conversão explícita
+    ...(orcamento && { orcamento: Number(orcamento) }),
+    ...(pesquisador_principal && { pesquisador_principal: Number(pesquisador_principal) }),
+    ...(Array.isArray(participantes) && {participantes: participantes.map(p => parseInt(p, 10)).filter(p => !isNaN(p))}),
+    ...(Array.isArray(assistentes_pesquisa) && {assistentes_pesquisa: assistentes_pesquisa.map(p => parseInt(p, 10)).filter(p => !isNaN(p))})
   };
+  
 
   console.log('Atualizando projeto:', numProjetoInt);
   console.log('Dados de atualização:', atualizacao);

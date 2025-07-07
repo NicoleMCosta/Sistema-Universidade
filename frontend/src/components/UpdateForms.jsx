@@ -23,7 +23,8 @@ export function Update_professor({open, setOpen, professor}) {
     idade: '',
     especialidade_pesquisa: '',
     sala: '',
-    tempo: ''
+    tempo: '',
+    numDept: ''
   });
 
   useEffect(() => {
@@ -89,6 +90,10 @@ export function Update_professor({open, setOpen, professor}) {
                         <label className='font-medium text-gray-900'>Tempo</label>
                         <input className="input_plc" name="tempo" value={info.tempo} onChange={handleChange} />
                       </div>
+                      <div>
+                        <label className='font-medium text-gray-900'>Departamento</label>
+                        <input className="input_plc" name="numDept" value={info.numDept} onChange={handleChange} />
+                      </div>
                     </div>
                   </div>
             </CardBody>
@@ -112,12 +117,14 @@ export function Update_aluno({open, setOpen, aluno}) {
   const queryClient = useQueryClient();
 
   const [info, setInfo] = useState({
-    nummatriculaestd: '',
+    numMatriculaEstd: '',
     nome: '',
     idade: '',
     tipo_curso: '',
-    numdept: '',
-    nummatricula_aconselhador: ''
+    numDept: '',
+    numMatricula_aconselhador: '',
+    numMatriculaProf: '',
+    numProjeto: ''
   });
 
   useEffect(() => {
@@ -158,7 +165,7 @@ export function Update_aluno({open, setOpen, aluno}) {
               </div>
               <div className='mb-10'>
                 <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-400 rounded-xl bg-transparent" 
-                  name='nummatriculaestd' value={info.nummatriculaestd} disabled />
+                  name='numMatriculaEstd' value={info.numMatriculaEstd} disabled />
               </div>
               <div className='flex-col w-full justify-between gap-4'>                 
                 <div className='input'>
@@ -175,11 +182,19 @@ export function Update_aluno({open, setOpen, aluno}) {
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Departamento</label>
-                  <input className="input_plc" name="numdept" value={info.numdept} onChange={handleChange} />
+                  <input className="input_plc" name="numDept" value={info.numDept} onChange={handleChange} />
                 </div>
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Aconselhador</label>
-                  <input className="input_plc" name="nummatricula_aconselhador" value={info.nummatricula_aconselhador} onChange={handleChange} />
+                  <input className="input_plc" name="numMatricula_aconselhador" value={info.numMatricula_aconselhador} onChange={handleChange} />
+                </div>
+                <div className='input'>
+                  <label className='font-medium text-gray-900'>Prof. Supervisor</label>
+                  <input className="input_plc" name="numMatriculaProf" value={info.numMatriculaProf} onChange={handleChange} />
+                </div>
+                <div className='input'>
+                  <label className='font-medium text-gray-900'>Projeto</label>
+                  <input className="input_plc" name="numProjeto" value={info.numProjeto} onChange={handleChange} />
                 </div>
               </div>
             </CardBody>
@@ -200,10 +215,10 @@ export function Update_departamento({open, setOpen, departamento}) {
   const queryClient = useQueryClient();
 
   const [info, setInfo] = useState({
-    numdept: '',
+    numDept: '',
     nome: '',
     escritorio_principal: '',
-    // lider_dept:''
+    numMatriculaProf:''
   });
 
   useEffect(() => {
@@ -244,7 +259,7 @@ export function Update_departamento({open, setOpen, departamento}) {
               </div>
               <div className='mb-10'>
                 <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-400 rounded-xl bg-transparent" 
-                  value={info.numdept} disabled />
+                  value={info.numDept} disabled />
               </div>
               <div className='input'>
                 <label className='font-medium text-gray-900'>Nome do Departamento</label>
@@ -254,10 +269,10 @@ export function Update_departamento({open, setOpen, departamento}) {
                 <label className='font-medium text-gray-900'>Escritório Principal</label>
                 <input className="input_plc" name="escritorio_principal" value={info.escritorio_principal} onChange={handleChange} />
               </div>
-              {/* <div className='input'>
+              <div className='input'>
                 <label className='font-medium text-gray-900'>Líder do Departamento</label>
-                <input className="input_plc" name='lider_dept' onChange={handleChange} value={info.lider_dept}/>
-              </div> */}
+                <input className="input_plc" name='numMatriculaProf' onChange={handleChange} value={info.numMatriculaProf}/>
+              </div>
             </CardBody>
             <CardFooter className="pt-0">
               <Button variant="gradient" onClick={handleUpdate} fullWidth className='botao_cad mt-10'>
@@ -276,17 +291,37 @@ export function Update_projeto({open, setOpen, projeto}) {
   const queryClient = useQueryClient();
 
   const [info, setInfo] = useState({
-    numprojeto: '',
+    numProjeto: '',
     orgao_financiador: '',
     data_inicio: '',
     data_final: '',
     orcamento: '',
-    pesquisador_principal: ''
+    pesquisador_principal: '',
+    participantes: [],
+    assistentes_pesquisa: []
   });
+
+  const [participantesTexto, setParticipantesTexto] = useState('');
+  const [assistentesTexto, setAssistentesTexto] = useState('');
 
   useEffect(() => {
     if (projeto) {
-      setInfo({ ...projeto });
+      setInfo({
+        ...projeto,
+        participantes: Array.isArray(projeto.participantes) ? projeto.participantes : [],
+        assistentes_pesquisa: Array.isArray(projeto.assistentes_pesquisa) ? projeto.assistentes_pesquisa : []
+      });
+
+      setParticipantesTexto(
+        Array.isArray(projeto.participantes)
+          ? projeto.participantes.join(', ')
+          : ''
+      );
+      setAssistentesTexto(
+        Array.isArray(projeto.assistentes_pesquisa)
+          ? projeto.assistentes_pesquisa.join(', ')
+          : ''
+      );
     }
   }, [projeto]);
 
@@ -307,9 +342,25 @@ export function Update_projeto({open, setOpen, projeto}) {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    mutation.mutate(info); 
-  }
+  
+    const participantesNumericos = participantesTexto
+      .split(/[;,]/)
+      .map(id => parseInt(id.trim(), 10))
+      .filter(id => !isNaN(id));
+  
+    const assistentesNumericos = assistentesTexto
+      .split(/[;,]/)
+      .map(id => parseInt(id.trim(), 10))
+      .filter(id => !isNaN(id));
 
+    mutation.mutate({
+      ...info,
+      participantes: participantesNumericos,
+      assistentes_pesquisa: assistentesNumericos
+    });
+  };
+  
+  
   return (
     <>
       <Dialog size="lg" open={open} handler={handleOpen} className="flex items-center justify-center bg-transparent shadow-none">
@@ -322,7 +373,7 @@ export function Update_projeto({open, setOpen, projeto}) {
               </div>
               <div className='mb-10'>
                 <input className="p-1.5 w-[100px] h-[40px] border-2 border-gray-100 text-base font-bold text-gray-400 rounded-xl bg-transparent" 
-                  value={info.numprojeto} disabled />
+                  value={info.numProjeto} disabled />
               </div>
               <div className='flex-col w-full justify-between gap-4'>                 
                 <div className='input'>
@@ -344,6 +395,26 @@ export function Update_projeto({open, setOpen, projeto}) {
                 <div className='input'>
                   <label className='font-medium text-gray-900'>Pesquisador Principal</label>
                   <input className="input_plc" name="pesquisador_principal" value={info.pesquisador_principal} onChange={handleChange} />
+                </div>
+                <div className='input'>
+                  <label className='font-medium text-gray-900'>Professores participantes</label>
+                  <input className='input_plc'
+                      type="text"
+                      name="participantes"
+                      placeholder="id1, id2, id3"
+                      value={participantesTexto}
+                      onChange={(e) => setParticipantesTexto(e.target.value)}
+                  />
+                </div>
+                <div className='input'>
+                  <label className='font-medium text-gray-900'>Assistentes de Pesquisa</label>
+                  <input className='input_plc'
+                      type="text"
+                      name="assistentes_pesquisa"
+                      placeholder="id1, id2, id3"
+                      value={assistentesTexto}
+                      onChange={(e) => setAssistentesTexto(e.target.value)}
+                  />
                 </div>
               </div>
             </CardBody>

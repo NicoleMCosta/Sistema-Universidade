@@ -15,9 +15,9 @@ export async function buscarTodosEstudantes() {
   }
 }
 
-export async function criarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador) {
+export async function criarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador, numMatriculaProf, numProjeto) {
   const db = getDb();
-  const novoEstudante = { numMatriculaEstd: parseInt(numMatriculaEstd), nome, idade, tipo_curso, numDept, numMatricula_aconselhador };
+  const novoEstudante = { numMatriculaEstd: parseInt(numMatriculaEstd), nome, idade, tipo_curso, numDept, numMatricula_aconselhador, numMatriculaProf: parseInt(numMatriculaProf), numProjeto: parseInt(numProjeto)};
 
   const resultado = await db.collection(COLLECTION).insertOne(novoEstudante);
   return { _id: resultado.insertedId, ...novoEstudante};
@@ -28,7 +28,7 @@ export async function buscarEstudantePorMat(numMatriculaEstd){
   return await db.collection(COLLECTION).findOne({numMatriculaEstd: parseInt(numMatriculaEstd) });
 }
 
-export async function atualizarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador) {
+export async function atualizarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador, numMatriculaProf, numProjeto) {
   const db = getDb();
   const matriculaNum = parseInt(numMatriculaEstd);
 
@@ -37,7 +37,9 @@ export async function atualizarEstudante(numMatriculaEstd, nome, idade, tipo_cur
     ...(idade && { idade: Number(idade) }),
     ...(tipo_curso && { tipo_curso }),
     ...(numDept && { numDept: Number(numDept) }),
-    ...(numMatricula_aconselhador && { numMatricula_aconselhador: Number(numMatricula_aconselhador) })
+    ...(numMatricula_aconselhador && { numMatricula_aconselhador: Number(numMatricula_aconselhador) }),
+    ...(numMatriculaProf && { numMatriculaProf: Number(numMatriculaProf) }),
+    ...(numProjeto && { numProjeto: Number(numProjeto) })
   };
 
   console.log('Buscando estudante com matrícula:', matriculaNum);

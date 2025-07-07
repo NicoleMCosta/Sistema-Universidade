@@ -15,12 +15,14 @@ export async function buscarTodosDepartamentos() {
   }
 }
 
-export async function criarDepartamento(numDept, nome, escritorio_principal) {
+export async function criarDepartamento(numDept, nome, escritorio_principal, numMatriculaProf) {
   const db = getDb();
+
   const novoDepartamento = {
     numDept: parseInt(numDept),
     nome,
-    escritorio_principal
+    escritorio_principal, 
+    numMatriculaProf: parseInt(numMatriculaProf)
   };
 
   console.log('Criando novo departamento:', novoDepartamento);
@@ -53,13 +55,14 @@ export async function buscarDepartamentoPorId(numDept) {
   }
 }
 
-export async function atualizarDepartamento(numDept, nome, escritorio_principal) {
+export async function atualizarDepartamento(numDept, nome, escritorio_principal, numMatriculaProf) {
   const db = getDb();
   const numDeptInt = parseInt(numDept);
 
   const atualizacao = {
     ...(nome && { nome }),
-    ...(escritorio_principal && { escritorio_principal })
+    ...(escritorio_principal && { escritorio_principal }),
+    ...(numMatriculaProf && {numMatriculaProf: parseInt(numMatriculaProf)})
   };
 
   console.log('Atualizando departamento:', numDeptInt);

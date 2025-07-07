@@ -8,13 +8,13 @@ import { criarErro } from "../middlewares/erros.js";
 
 export async function criar(req, res, next) {
     try {
-        const { numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador } = req.body;
+        const { numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador, numMatriculaProf, numProjeto } = req.body;
 
-        if (!numMatriculaEstd || !nome || !idade || !tipo_curso || !numDept || !numMatricula_aconselhador) {
-            return res.status(400).json({ erro: 'Todos os campos são necessários'})
+        if (!numMatriculaEstd || !nome || !idade || !tipo_curso || !numDept || !numMatricula_aconselhador || !numMatriculaProf || !numProjeto) {
+            return res.status(400).json({ erro: 'Todos os campos são necessários. Se não houver projeto, preencha os campos Supervisor e Projeto com -1'})
         }
 
-        const novoEstudante = await criarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador);
+        const novoEstudante = await criarEstudante(numMatriculaEstd, nome, idade, tipo_curso, numDept, numMatricula_aconselhador, numMatriculaProf, numProjeto);
         res.status(200).json(novoEstudante);
     } catch (error) {
         return next(criarErro(500, 'Erro ao criar Aluno'))
@@ -40,7 +40,7 @@ export async function buscarPorMat(req, res, next) {
 export async function atualizar(req, res, next) {
   try {
     const { numMatriculaEstd } = req.params;
-    const { nome, idade, tipo_curso, numDept, numMatricula_aconselhador } = req.body;
+    const { nome, idade, tipo_curso, numDept, numMatricula_aconselhador, numMatriculaProf, numProjeto} = req.body;
 
     console.log('Iniciando atualização para matrícula:', numMatriculaEstd);
     console.log('Tipo da matrícula no controller:', typeof numMatriculaEstd);
@@ -51,7 +51,9 @@ export async function atualizar(req, res, next) {
       idade,
       tipo_curso,
       numDept,
-      numMatricula_aconselhador
+      numMatricula_aconselhador,
+      numMatriculaProf,
+      numProjeto
     );
 
     if (!resultado) {
