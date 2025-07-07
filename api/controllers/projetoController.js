@@ -8,8 +8,8 @@ import { criarErro } from "../middlewares/erros.js";
 
 export async function criar(req, res, next) {
   try {
-    const { numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes, assistentes_pesquisa } = req.body;
-    const resultado = await criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes, assistentes_pesquisa);
+    const { numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes } = req.body;
+    const resultado = await criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes);
     res.status(201).json(resultado);
   } catch (erro) {
     next(criarErro(500, "Erro ao criar projeto"));
@@ -30,7 +30,7 @@ export async function buscarPorId(req, res, next) {
 export async function atualizar(req, res, next) {
   try {
     const { numProjeto } = req.params;
-    const { orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes, assistentes_pesquisa} = req.body;
+    const { orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes} = req.body;
 
     console.log('Iniciando atualização do projeto:', numProjeto);
     const resultado = await atualizarProjeto(
@@ -40,8 +40,7 @@ export async function atualizar(req, res, next) {
       data_final,
       orcamento,
       pesquisador_principal,
-      participantes,
-      assistentes_pesquisa
+      participantes
     );
 
     if (!resultado) {

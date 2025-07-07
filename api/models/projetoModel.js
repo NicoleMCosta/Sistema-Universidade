@@ -14,9 +14,9 @@ export async function buscarTodosProjetos() {
   }
 }
 
-export async function criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes =[], assistentes_pesquisa =[]) {
+export async function criarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes =[]) {
   const db = getDb();
-  const novoProjeto = {numProjeto: parseInt(numProjeto), orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal: parseInt(pesquisador_principal), participantes, assistentes_pesquisa};
+  const novoProjeto = {numProjeto: parseInt(numProjeto), orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal: parseInt(pesquisador_principal), participantes};
   const resultado = await db.collection(COLLECTION).insertOne(novoProjeto);
   return { _id: resultado.insertedId, ...novoProjeto};
 }
@@ -27,7 +27,7 @@ export async function buscarProjetoPorId(numProjeto) {
   return res;
 }
 
-export async function atualizarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes = [], assistentes_pesquisa=[]) {
+export async function atualizarProjeto(numProjeto, orgao_financiador, data_inicio, data_final, orcamento, pesquisador_principal, participantes = []) {
   const db = getDb();
   
   const numProjetoInt = parseInt(numProjeto);
@@ -38,8 +38,7 @@ export async function atualizarProjeto(numProjeto, orgao_financiador, data_inici
     ...(data_final && { data_final }),
     ...(orcamento && { orcamento: Number(orcamento) }),
     ...(pesquisador_principal && { pesquisador_principal: Number(pesquisador_principal) }),
-    ...(Array.isArray(participantes) && {participantes: participantes.map(p => parseInt(p, 10)).filter(p => !isNaN(p))}),
-    ...(Array.isArray(assistentes_pesquisa) && {assistentes_pesquisa: assistentes_pesquisa.map(p => parseInt(p, 10)).filter(p => !isNaN(p))})
+    ...(Array.isArray(participantes) && {participantes: participantes.map(p => parseInt(p, 10)).filter(p => !isNaN(p))})
   };
   
 

@@ -266,8 +266,7 @@ export function Cadastrar_projeto({open, setOpen}) {
     data_final: '',
     orcamento: '',
     pesquisador_principal: '',
-    participantes: '',
-    assistentes_pesquisa: ''
+    participantes: ''
   });
 
   const handleFormChange = (e) => {
@@ -293,17 +292,11 @@ export function Cadastrar_projeto({open, setOpen}) {
       .map((id) => parseInt(id.trim(), 10))
       .filter((id) => !isNaN(id));
     
-    const assistentesNumericos = info.assistentes_pesquisa
-      .split(',')
-      .map((id) => parseInt(id.trim(), 10))
-      .filter((id) => !isNaN(id));
-    
     const dadosParaEnviar = {
       ...info,
       numProjeto: parseInt(info.numProjeto, 10),
       orcamento: parseFloat(info.orcamento),
-      participantes: participantesNumericos, 
-      assistentes_pesquisa: assistentesNumericos
+      participantes: participantesNumericos
     };
   
     mutation.mutate(dadosParaEnviar);
@@ -347,10 +340,6 @@ export function Cadastrar_projeto({open, setOpen}) {
               <div className='input'>
                 <label className='font-medium text-gray-900'>Professores participantes</label>
                   <input className="input_plc" name='participantes' placeholder='id1; id2; id3' value={info.participantes} onChange={handleFormChange}/>
-              </div>
-              <div className='input'>
-                <label className='font-medium text-gray-900'>Assistentes de Pesquisa</label>
-                  <input className="input_plc" name='assistentes_pesquisa' placeholder='id1; id2; id3' value={info.assistentes_pesquisa} onChange={handleFormChange}/>
               </div>
             </div>
           </CardBody>

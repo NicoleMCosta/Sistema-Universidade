@@ -302,7 +302,6 @@ export function Update_projeto({open, setOpen, projeto}) {
   });
 
   const [participantesTexto, setParticipantesTexto] = useState('');
-  const [assistentesTexto, setAssistentesTexto] = useState('');
 
   useEffect(() => {
     if (projeto) {
@@ -315,11 +314,6 @@ export function Update_projeto({open, setOpen, projeto}) {
       setParticipantesTexto(
         Array.isArray(projeto.participantes)
           ? projeto.participantes.join(', ')
-          : ''
-      );
-      setAssistentesTexto(
-        Array.isArray(projeto.assistentes_pesquisa)
-          ? projeto.assistentes_pesquisa.join(', ')
           : ''
       );
     }
@@ -348,15 +342,10 @@ export function Update_projeto({open, setOpen, projeto}) {
       .map(id => parseInt(id.trim(), 10))
       .filter(id => !isNaN(id));
   
-    const assistentesNumericos = assistentesTexto
-      .split(/[;,]/)
-      .map(id => parseInt(id.trim(), 10))
-      .filter(id => !isNaN(id));
-
+  
     mutation.mutate({
       ...info,
-      participantes: participantesNumericos,
-      assistentes_pesquisa: assistentesNumericos
+      participantes: participantesNumericos
     });
   };
   
@@ -404,16 +393,6 @@ export function Update_projeto({open, setOpen, projeto}) {
                       placeholder="id1, id2, id3"
                       value={participantesTexto}
                       onChange={(e) => setParticipantesTexto(e.target.value)}
-                  />
-                </div>
-                <div className='input'>
-                  <label className='font-medium text-gray-900'>Assistentes de Pesquisa</label>
-                  <input className='input_plc'
-                      type="text"
-                      name="assistentes_pesquisa"
-                      placeholder="id1, id2, id3"
-                      value={assistentesTexto}
-                      onChange={(e) => setAssistentesTexto(e.target.value)}
                   />
                 </div>
               </div>
